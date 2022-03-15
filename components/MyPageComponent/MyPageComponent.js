@@ -1,14 +1,19 @@
 import React from 'react'
 import { TitleBar, Button, Redirect } from '@shopify/app-bridge/actions';
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { Page } from '@shopify/polaris';
+import { gql } from 'apollo-boost';
+import { useQuery } from "react-apollo";
 
 const MyPageComponent = (props) => {
-  const { children } = props;
+  const { title, subtitle, children } = props;
+  const app = useAppBridge();
 
-  const saveButton = Button.create(app, { label: 'Save' });
-
+  const primaryButton = Button.create(app, { label: 'Save' });
   const settingsButton = Button.create(app, { label: 'Settings' });
+
   const redirect = Redirect.create(app);
+
   settingsButton.subscribe('click', () => {
     redirect.dispatch({
       type: Redirect.Action.APP,
@@ -17,9 +22,9 @@ const MyPageComponent = (props) => {
   });
 
   const titleBarOptions = {
-    title: 'My page title',
+    title: `Welcome!`,
     buttons: {
-      primary: saveButton,
+      primary: primaryButton,
       secondary: [settingsButton]
     },
   };
@@ -27,7 +32,11 @@ const MyPageComponent = (props) => {
   const myTitleBar = TitleBar.create(app, titleBarOptions);
   
   return (
-    <Page>
+    <Page
+      title={title}
+      subtitle={subtitle}
+      fullWidth
+    >
       { children }
     </Page>
   )
