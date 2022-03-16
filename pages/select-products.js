@@ -13,6 +13,7 @@ import {
   SkeletonThumbnail
 } from '@shopify/polaris';
 import AddFieldsToProducts from '../components/AddFieldsToProducts';
+import CsvExporter from '../components/CsvExporter/CsvExporter';
 
 const SelectProducts = () => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -54,34 +55,39 @@ const SelectProducts = () => {
       <Frame>
         <Layout>
           <Layout.Section>
-            <Card>
-              <ResourceList
-                emptyState={emptyStateMarkup}
-                items={products}
-                resourceName={{singular: 'product', plural: 'products'}}
-                totalItemsCount={products.length}
-                showHeader
-                renderItem={(product) => {
-                  const {id, title, images} = product;
-                  const image = images[0];
-                  const media = image?.originalSrc ? 
-                  <Thumbnail size="medium" source={image?.originalSrc} alt={image?.altText} /> :
-                  <SkeletonThumbnail size="medium" />
-        
-                  return (
-                    <ResourceItem
-                      id={id}
-                      media={media}
-                      accessibilityLabel={`Product ${title} selected`}
-                    >
-                      <h3>
-                        <TextStyle variation="strong">{title}</TextStyle>
-                      </h3>
-                      <div>{id}</div>
-                    </ResourceItem>
-                  );
-                }}
-              />
+            <Card >
+              <Card.Section>
+                <ResourceList
+                  emptyState={emptyStateMarkup}
+                  items={products}
+                  resourceName={{singular: 'product', plural: 'products'}}
+                  totalItemsCount={products.length}
+                  showHeader
+                  renderItem={(product) => {
+                    const {id, title, images} = product;
+                    const image = images[0];
+                    const media = image?.originalSrc ? 
+                    <Thumbnail size="medium" source={image?.originalSrc} alt={image?.altText} /> :
+                    <SkeletonThumbnail size="medium" />
+          
+                    return (
+                      <ResourceItem
+                        id={id}
+                        media={media}
+                        accessibilityLabel={`Product ${title} selected`}
+                      >
+                        <h3>
+                          <TextStyle variation="strong">{title}</TextStyle>
+                        </h3>
+                        <div>{id}</div>
+                      </ResourceItem>
+                    );
+                  }}
+                />
+              </Card.Section>
+              {
+                products.length != 0 && <Card.Section><CsvExporter products={products} /></Card.Section>
+              }
             </Card>
               {
                 products.length != 0 && <Card sectioned>
