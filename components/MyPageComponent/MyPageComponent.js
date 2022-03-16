@@ -1,3 +1,4 @@
+import { useContext, useState } from 'react';
 import { 
   TitleBar, 
   Button, 
@@ -6,19 +7,14 @@ import {
   AppLink
 } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { Page, Frame, Loading } from '@shopify/polaris';
-import { useQuery } from "react-apollo";
-import { GET_SHOP } from '../../graphql/queries';
+import { Page } from '@shopify/polaris';
+import { ShopContext } from '../../assets/context';
 
 const MyPageComponent = (props) => {
   const { title, subtitle, children, pageName, secondaryAction } = props;
+  const shop = useContext(ShopContext);
   const app = useAppBridge();
   let secondaryButton;
-
-  // get shop name
-  const { data, loading, error} = useQuery(GET_SHOP)
-  if (loading) return <Frame><Loading /></Frame>;
-  if (error) return `Error! ${error.message}`;
 
   // title bar setup
   const primaryButton = Button.create(app, { label: 'Bendi Website' });
@@ -40,8 +36,8 @@ const MyPageComponent = (props) => {
   const myTitleBar = TitleBar.create(app, titleBarOptions);
 
   // update title bar when data loaded
-  data && myTitleBar.set({
-    title: `Welcome ${data.shop.name}!`,
+  shop && myTitleBar.set({
+    title: `Welcome ${shop.name}!`,
   });
 
   // add secondary button action
@@ -89,7 +85,9 @@ const MyPageComponent = (props) => {
       title={title}
       subtitle={subtitle}
     >
-      { children }
+      <ShopContext.Provider value={shop}>
+        { children }
+      </ShopContext.Provider>
     </Page>
   )
 }

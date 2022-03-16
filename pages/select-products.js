@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import MyPageComponent from '../components/MyPageComponent/MyPageComponent';
 import { ResourcePicker} from '@shopify/app-bridge-react';
-import { TitleBar, Button } from '@shopify/app-bridge/actions';
 import { 
   Frame, 
   Layout, 
@@ -13,6 +12,7 @@ import {
   Thumbnail,
   SkeletonThumbnail
 } from '@shopify/polaris';
+import AddFieldsToProducts from '../components/AddFieldsToProducts';
 
 const SelectProducts = () => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -83,6 +83,11 @@ const SelectProducts = () => {
                 }}
               />
             </Card>
+              {
+                products.length != 0 && <Card sectioned>
+                  <AddFieldsToProducts products={products} />
+                </Card>
+              }
           </Layout.Section>
           <ResourcePicker 
             resourceType='Product'
