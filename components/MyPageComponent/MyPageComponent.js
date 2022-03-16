@@ -11,8 +11,9 @@ import { useQuery } from "react-apollo";
 import { GET_SHOP } from '../../graphql/queries';
 
 const MyPageComponent = (props) => {
-  const { title, subtitle, children } = props;
+  const { title, subtitle, children, pageName, secondaryAction } = props;
   const app = useAppBridge();
+  let secondaryButton;
 
   // get shop name
   const { data, loading, error} = useQuery(GET_SHOP)
@@ -20,24 +21,20 @@ const MyPageComponent = (props) => {
   if (error) return `Error! ${error.message}`;
 
   // title bar setup
-  const primaryButton = Button.create(app, { label: 'Save' });
-  const settingsButton = Button.create(app, { label: 'Settings' });
-
+  const primaryButton = Button.create(app, { label: 'Bendi Website' });
   const redirect = Redirect.create(app);
-
-  settingsButton.subscribe('click', () => {
-    redirect.dispatch({
-      type: Redirect.Action.APP,
-      payload: { path: '/settings' }
+  primaryButton.subscribe('click', () => {
+    redirect.dispatch(Redirect.Action.REMOTE, {
+      url: 'https://www.bendi.wtf/',
+      newContext: true,
     });
   });
 
   const titleBarOptions = {
     title: `Welcome!`,
     buttons: {
-      primary: primaryButton,
-      secondary: [settingsButton]
-    },
+      primary: primaryButton
+    }
   };
   
   const myTitleBar = TitleBar.create(app, titleBarOptions);
@@ -47,13 +44,27 @@ const MyPageComponent = (props) => {
     title: `Welcome ${data.shop.name}!`,
   });
 
+  // add secondary button action
+  if (secondaryAction.on) {
+    secondaryButton = Button.create(app, { label: secondaryAction?.label });
+    secondaryButton.subscribe('click', () => {
+      secondaryAction?.action()
+    });
+    myTitleBar.set({
+      buttons: {
+        primary: primaryButton,
+        secondary: [secondaryButton]
+      }
+    });
+  };
+
   // set navigation menu up
   const onboardingLink = AppLink.create(app, {
     label: 'Onboarding',
     destination: '/onboarding',
   });
 
-  const selectProductLink = AppLink.create(app, {
+  const selectProductsLink = AppLink.create(app, {
     label: 'Select products',
     destination: '/select-products',
   });
@@ -63,17 +74,20 @@ const MyPageComponent = (props) => {
     destination: '/settings',
   });
   
-  // or create a NavigationMenu with the settings link active
   const navigationMenu = NavigationMenu.create(app, {
-    items: [onboardingLink, selectProductLink, settingsLink],
+    items: [onboardingLink, selectProductsLink, settingsLink],
     active: undefined,
   });
+
+  // set active page
+  pageName === "onboarding" && navigationMenu.set({active: onboardingLink});
+  pageName === "selectProducts" && navigationMenu.set({active: selectProductsLink});
+  pageName === "settings" && navigationMenu.set({active: settingsLink});
 
   return (
     <Page
       title={title}
       subtitle={subtitle}
-      fullWidth
     >
       { children }
     </Page>

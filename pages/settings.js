@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import MyPageComponent from '../components/MyPageComponent/MyPageComponent';
 
-const settings = () => {
+const Settings = () => {
   return (
-    <div>settings</div>
+    <MyPageComponent
+      title="Settings"
+      subtitle="Edit your product stsories here"
+      pageName="settings"
+      secondaryAction={{ on: false }}
+    >
+      Settings
+    </MyPageComponent>
   )
 }
 
-export default settings
+export default Settings
