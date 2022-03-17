@@ -1,0 +1,204 @@
+<style>
+  .active {
+    background: {{ block.settings.primary_color }} !important;
+  }
+
+  .heading {
+    color: {{ block.settings.secondary_font_color }};
+    font-weight: {{ block.settings.bold_weight }};
+  }
+
+  .title {
+    font-weight: {{ block.settings.bold_weight }};
+    margin: 0;
+  }
+
+  .title-container {
+    display: inline-block;
+    align-items: center;
+    padding:0px 0px 3px 0px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid {{ block.settings.primary_color }};
+  }
+
+  .bold {
+    font-weight: {{ block.settings.font_weight }} !important;
+  }
+</style>
+
+{% assign sections = "Design, Materials, Manufacturing, Logistics, Care & Use, End-of-life" | split: ", " %}
+{% assign settings = product.metafields.bps.settings %}
+{% assign design = product.metafields.bps.design %}
+{% assign materials = product.metafields.bps.materials %}
+{% assign manufacturing = product.metafields.bps.manufacturing %}
+{% assign logistics = product.metafields.bps.logistics %}
+{% assign care = product.metafields.bps.care %}
+{% assign end = product.metafields.bps.end %}
+
+<story-container id="story-container" class="wide-layout" style="
+  color: {{ block.settings.font_color }};
+  border: 1px solid {{ block.settings.secondary_color }}
+">
+  <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
+    <ul>
+      {% for section in sections %}
+        {% assign sectionKey = section | downcase | replace: "&", "and" | replace: "-", " " | split: " "}
+        {% if settings.value[sectionKey] %}
+          <li class="listItem">
+            <button id= {{ sectionKey[0] }} value={{ sectionKey[0] }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
+              {{ section }}
+            </button>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </navbar>
+
+  {% if settings.value.design %}
+    <main-section id="design-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">Who designed it?</p>
+      <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
+      
+        <p>This is a circular item</p>
+      
+    </main-section>
+  {% endif %}
+  
+  {% if settings.value[sectionKey] %}
+    <main-section id="materials-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">What is it made of?</p>
+      <div class="flex-row">
+        <p>Primary material is <span class="bold">Cotton</span></p>
+      </div>
+      <div class="flex-row">
+        <p><span class="bold">Certified</span></p>
+      </div>
+      <div class="flex-row">
+        <p>Other materials: <span class="bold">Polyester</span></p>
+      </div>
+      <p>Some extra text about the product composition.</p>
+    </main-section>
+  {% endif %}
+
+  {% if settings.value.manufacturing %}
+    <main-section id="manufacturing-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">Where was it made?</p>
+      <div class="flex-row">
+        <p> Made by our supplier, <span class="bold">MegaSupplier</span></p>
+      </div>
+      
+      <p>Address: BE12 ND13, Street, City, UK</p>
+    </main-section>
+  {% endif %}
+  
+  {% if settings.value.logistics %}
+    <main-section id="logistics-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">How did it get here?</p>
+      <div class="flex-row">
+        <p>Transportation by <span class="bold">Boat</span></p>
+      </div>
+      <div class="flex-row">
+        <p>Our warehouse in London uses <span class="bold">Renewable energy</span></p>
+      </div>
+      <div class="flex-row">
+        <p><span class="bold">super Fungi</span> packaging</p>
+      </div>
+    </main-section>
+  {% endif %}
+
+  {% if settings.value.care %}
+    <main-section id="care-and-use-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">How should I look after it?</p>
+      <div class="flex-row">
+        <p>Washing at: <span class="bold">settings here.</span></p>
+      </div>
+      <div class="flex-row">
+        <p>Use a <span class="bold">guppi bag</span></p>
+      </div>
+      <p>Washing instructions instruction here.</p>
+      
+    </main-section>
+  {% endif %}
+
+  {% if settings.value.end %}
+    <main-section id="end-of-life-section" class="main-section" style="width: 70%; padding: 10px 0px 0px;">
+      <div class="title-container">
+        <p class="title">Product journey</p>
+      </div>
+      <p class="heading">What happens after?</p>
+      <div class="flex-row">
+        <p>Designed to be worn <span class="bold">500+ times</span></p>
+      </div>
+      <div class="flex-row">
+        
+        <p><span class="bold">Recycle</span> or <span class="bold">resell</span> to avoid landfill</p>
+      </div>
+      <p>Recyclability - you can recycle this easy. </p>
+      
+        <p>This product does not have a take back scheme</p>
+      
+    </main-section>
+  {% endif %}
+
+</story-container>
+
+{% schema %}
+{
+  "name": "bps",
+  "templates": ["product"],
+  "target": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary color",
+      "default": "#FDE639"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "Secondary color",
+      "default": "#FBFBFB"
+    },
+    {
+      "type": "color",
+      "id": "primary_font_color",
+      "label": "Primary font color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "secondary_font_color",
+      "label": "Secondary font color",
+      "default": "#64697A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#000000"
+    },
+    {
+      "type": "string",
+      "id": "bold_weight",
+      "label": "Bold font weight",
+      "default": "700"
+    }
+  ]
+}
+{% endschema %}
