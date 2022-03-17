@@ -79,3 +79,19 @@ export const CREATE_PRIVATE_METAFIELD = gql`
 // }
 
 // -----------------------------
+
+export const CREATE_METAFIELD_DEFINITION = gql`
+  mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
+    metafieldDefinitionCreate(definition: $definition) {
+      createdDefinition {
+        id
+        name
+      }
+      userErrors {
+        field
+        message
+        code
+      }
+    }
+  }
+`
