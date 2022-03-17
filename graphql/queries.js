@@ -28,3 +28,19 @@ export const GET_SHOP = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_METAFIELD = gql`
+  query ProductMetafield($namespace: String!, $key: String!, $ownerId: ID!) {
+    product(id: $ownerId) {
+      metafield(namespace: $namespace, key: $key) {
+        value
+        key
+      }
+    }
+  }
+`
+// {
+//   "namespace": "my_fields",
+//   "key": "liner_material",
+//   "ownerId": "gid://shopify/Product/108828309"
+// }
