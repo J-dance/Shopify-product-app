@@ -3,10 +3,11 @@ import { useEffect } from 'react';
 import { Spinner, Stack } from '@shopify/polaris';
 
 const MutationPanel = (props) => {
-  const { item, MUTATION, input } = props;
+  const { MUTATION, input, onCompletedAction } = props;
 
   const [runMutation, { data, loading, error }] = useMutation(MUTATION, {
-    "variables": input
+    "variables": input,
+    onCompleted:() => { onCompletedAction() }
   });
 
   useEffect(() => {
@@ -15,10 +16,9 @@ const MutationPanel = (props) => {
 
   error && console.log(error)
   data && console.log(data);
-
+  
   return (
     <Stack section>
-      <p>{item.title}</p>
       {
         loading && <Spinner />
       }

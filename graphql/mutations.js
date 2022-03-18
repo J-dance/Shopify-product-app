@@ -10,7 +10,7 @@ export const PRODUCT_UPDATE = gql`
   }
 `
 // -----------------------------
-export const CREATE_METAFIELDS = gql`
+export const SET_METAFIELDS = gql`
   mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
     metafieldsSet(metafields: $metafields) {
       metafields {

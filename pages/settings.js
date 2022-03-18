@@ -10,7 +10,6 @@ const Settings = () => {
   const [product, setProduct] = useState();
 
   const handleSelection = (selectPayload) => {
-    console.log(selectPayload.selection[0]);
     setProduct(selectPayload.selection[0]);
     setIsPickerOpen(false);
   };
@@ -52,15 +51,19 @@ const Settings = () => {
             }
 
           </Card>
-        </Layout.Section>
-        <Layout.Section>
-          {
-            product && <ChooseSection product={product} />
-          }
-          {
-            product && <SectionSettings product={product} />
-          }
-        </Layout.Section>
+        </Layout.Section> 
+        {
+          product && 
+          <Layout.Section oneHalf>
+            <ChooseSection product={product} />
+          </Layout.Section>
+        }
+        {
+          product &&
+          <Layout.Section oneHalf>
+            <SectionSettings product={product} />
+          </Layout.Section>
+        }
         <ResourcePicker 
           resourceType='Product'
           open={isPickerOpen}

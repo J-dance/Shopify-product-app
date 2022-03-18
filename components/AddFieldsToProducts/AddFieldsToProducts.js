@@ -1,7 +1,7 @@
 import { Button } from '@shopify/polaris'
 import { useState } from 'react'
 import MutationPanel from '../MutationPanel';
-import { CREATE_METAFIELD_DEFINITION, CREATE_METAFIELDS } from '../../graphql/mutations';
+import { CREATE_METAFIELD_DEFINITION, SET_METAFIELDS } from '../../graphql/mutations';
 import { design, materials, manufacturing, logistics, care, end } from '../../assets/database';
 
 const AddFieldsToProducts = (props) => {
@@ -86,15 +86,14 @@ const AddFieldsToProducts = (props) => {
             }
           });
         
-          const create_metafields_input = {
+          const set_metafields_input = {
             "metafields": metafield_inputs_array
           };
 
           return  <MutationPanel 
                     key={product.id} 
-                    item={product} 
-                    MUTATION={CREATE_METAFIELDS}
-                    input={create_metafields_input} 
+                    MUTATION={SET_METAFIELDS}
+                    input={set_metafields_input} 
                   />
         })
       }
@@ -113,7 +112,6 @@ const AddFieldsToProducts = (props) => {
           };
           return  <MutationPanel
                     key={definition.key}
-                    item={{title: definition.name}}
                     MUTATION={CREATE_METAFIELD_DEFINITION}
                     input={create_metafield_definition_input}
                   />

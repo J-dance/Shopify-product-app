@@ -2,16 +2,20 @@ import { useState, useCallback, useEffect } from 'react';
 import { Checkbox, Spinner, Frame, Form, FormLayout, Card, Button, Stack } from '@shopify/polaris';
 import { useQuery } from 'react-apollo';
 import { GET_PRODUCT_METAFIELD } from '../../../graphql/queries';
+import { SET_METAFIELDS } from '../../../graphql/mutations';
+import MutationPanel from '../../MutationPanel/MutationPanel';
 
 const ChooseSection = (props) => {
   const { product } = props;
   const [checked, setChecked] = useState();
-  const [isValuesChanged, setIsValueschaged] = useState(false);
+  const [isValuesChanged, setIsValueschanged] = useState(false);
+  const [saveChanges, setSaveChanges] = useState(false);
 
   const handleChange = useCallback((newChecked, section) => {
     const copy = {...checked};
     copy[section] = newChecked;
     setChecked(copy);
+    setIsValueschanged(true)
   }, [checked]);
 
   const get_product_metafield_input = {
@@ -19,6 +23,16 @@ const ChooseSection = (props) => {
     "key": `settings`,
     "ownerId": `${product.id}`
   };
+
+  const set_product_metafield_input = {
+    "metafields": [{
+      "namespace": 'bps',
+      "key": `settings`,
+      "ownerId": `${product.id}`,
+      "value": JSON.stringify(checked),
+      "type": "json"
+    }]
+  }
 
   const { data, loading, error } = useQuery(GET_PRODUCT_METAFIELD, {
     "variables": get_product_metafield_input
@@ -33,8 +47,8 @@ const ChooseSection = (props) => {
   }, [data]);
 
   const handleSubmit = useCallback(() => {
-    console.log(checked);
-  }, [checked]);
+    setSaveChanges(true);
+  }, []);
 
   if (loading) return <Frame>
     <Card sectioned>
@@ -44,7 +58,7 @@ const ChooseSection = (props) => {
     </Card>
   </Frame>;
   
-  if (error) return <p>Oops.. error in retrieving section data</p>
+  if (error) return <Card sectioned><p>Oops.. error in retrieving section data</p></Card>
 
   return (
     <Card sectioned title="Choose which sections to display">
@@ -80,7 +94,23 @@ const ChooseSection = (props) => {
             checked={checked?.end}
             onChange={(checked) => { handleChange(checked, 'end')}}
           />
-          <Button submit>Save</Button>
+          <Stack>
+            <Button 
+              submit
+              disabled={!isValuesChanged}>
+              Save
+            </Button>
+            {
+              saveChanges && <MutationPanel 
+                MUTATION={SET_METAFIELDS} 
+                input={set_product_metafield_input} 
+                onCompletedAction={() => {
+                  setIsValueschanged(false);
+                  setSaveChanges(false)
+                }}
+              /> 
+            }
+          </Stack>
         </FormLayout>
       </Form>
     </Card>
