@@ -1,4 +1,6 @@
+// get all nav items 
 let renderedSectionElements  = document.getElementsByClassName("nav-item");
+// for each nav Item, get the id of element e.g. 'care-and-use'
 let renderedSections = [...renderedSectionElements].map((section) => section.id);
 // --------------------------
 

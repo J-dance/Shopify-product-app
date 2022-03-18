@@ -42,19 +42,16 @@
   <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
     <ul>
       {% for section in sections %}
-        {% assign sectionKey = section | downcase | replace: "&", "and" | replace: "-", " " | split: " "}
-        {% if settings.value[sectionKey] %}
-          <li class="listItem">
-            <button id= {{ sectionKey[0] }} value={{ sectionKey[0] }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
-              {{ section }}
-            </button>
-          </li>
-        {% endif %}
+        {% assign sectionKey = section | downcase | replace: "&", "and" | replace: " ", "-" %}
+        <li class="listItem">
+          <button id= {{ sectionKey }} value={{ sectionKey }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
+            {{ section }}
+          </button>
+        </li>
       {% endfor %}
     </ul>
   </navbar>
 
-  {% if settings.value.design %}
     <main-section id="design-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -65,9 +62,7 @@
         <p>This is a circular item</p>
       
     </main-section>
-  {% endif %}
   
-  {% if settings.value[sectionKey] %}
     <main-section id="materials-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -84,9 +79,7 @@
       </div>
       <p>Some extra text about the product composition.</p>
     </main-section>
-  {% endif %}
 
-  {% if settings.value.manufacturing %}
     <main-section id="manufacturing-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -98,9 +91,7 @@
       
       <p>Address: BE12 ND13, Street, City, UK</p>
     </main-section>
-  {% endif %}
   
-  {% if settings.value.logistics %}
     <main-section id="logistics-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -116,9 +107,7 @@
         <p><span class="bold">super Fungi</span> packaging</p>
       </div>
     </main-section>
-  {% endif %}
 
-  {% if settings.value.care %}
     <main-section id="care-and-use-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -133,9 +122,7 @@
       <p>Washing instructions instruction here.</p>
       
     </main-section>
-  {% endif %}
 
-  {% if settings.value.end %}
     <main-section id="end-of-life-section" class="main-section" style="width: 70%; padding: 10px 0px 0px;">
       <div class="title-container">
         <p class="title">Product journey</p>
@@ -153,8 +140,7 @@
         <p>This product does not have a take back scheme</p>
       
     </main-section>
-  {% endif %}
-
+    
 </story-container>
 
 {% schema %}
@@ -162,6 +148,8 @@
   "name": "bps",
   "templates": ["product"],
   "target": "section",
+  "stylesheet": "bps.css",
+  "javascript": "bps.js",
   "settings": [
     {
       "type": "color",
@@ -194,10 +182,10 @@
       "default": "#000000"
     },
     {
-      "type": "string",
+      "type": "number",
       "id": "bold_weight",
       "label": "Bold font weight",
-      "default": "700"
+      "default": 700
     }
   ]
 }
