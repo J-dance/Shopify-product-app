@@ -1,6 +1,4 @@
-// get all nav items 
 let renderedSectionElements  = document.getElementsByClassName("nav-item");
-// for each nav Item, get the id of element e.g. 'care-and-use'
 let renderedSections = [...renderedSectionElements].map((section) => section.id);
 // --------------------------
 
@@ -43,31 +41,40 @@ function setBlockLayout () {
   const ulElement = document.querySelector("ul");
   const width = outerElement.offsetWidth;
   console.log(width);
-
+  
   if (width >= 420 ) {
     // wide area
     console.log('apply nav as col');
+    outerElement.classList.remove("thin-layout");
     outerElement.classList.add("wide-layout");
     // set width of main-section to 70%
     mainElements.forEach((element) => {
       element.style.width = "70%";
       element.style.padding = "10px 0px 0px 0px";
     });
+    // set ul -> display block
+    ulElement.style.display = "block"
+    // set li -> display: inline
+    liElements.forEach((element) => {
+      element.style.display = "list-item";
+      element.style.margin = '2px';
+    })
   } else {
     // thin area
     console.log('apply nav as row');
+    outerElement.classList.remove("wide-layout");
     outerElement.classList.add("thin-layout");
     // set width of main-section to 100%
     mainElements.forEach((element) => {
       element.style.width = "100%";
-      // element.style.height = "70%"; fix height?
       element.style.padding = "10px 20px 0px 20px";
     });
     // set ul -> display flex
     ulElement.style.display = "flex"
     // set li -> display: inline
     liElements.forEach((element) => {
-      element.style.display = "inline"
+      element.style.display = "inline";
+      element.style.margin = '4px 2px';
     })
   }
 }
@@ -75,7 +82,6 @@ function setBlockLayout () {
 // run function on start
 function initializeBlock () {
   setBlockLayout();
-  setAllSectionsInvisible();
   setActiveSection(renderedSectionElements[0].id)
 
   // add functions to nav-items
@@ -84,5 +90,9 @@ function initializeBlock () {
     element.addEventListener("click", setSection);
   });
 }
+
+window.addEventListener('resize', function(event){
+  setBlockLayout();
+});
 
 initializeBlock();
