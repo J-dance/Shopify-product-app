@@ -18,7 +18,7 @@ const SectionSettings = (props) => {
   const sections = [
     {label: 'Design', value: 'design'},
     {label: 'Materials', value: 'materials'},
-    {label: 'Manufacturing', value: 'manufacturing'},
+    // {label: 'Manufacturing', value: 'manufacturing'},
     {label: 'Logistics', value: 'logistics'},
     {label: 'Care & Use', value: 'care'},
     {label: 'End-of-life', value: 'end'},

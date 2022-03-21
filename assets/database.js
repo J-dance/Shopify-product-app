@@ -46,7 +46,7 @@ export const care = {
 };
 
 export const end = {
-  expNumWears: 500,
+  expNumWears: "500",
   recycle: "you can recycle this easy.",
   takeBackScheme: null
 };
