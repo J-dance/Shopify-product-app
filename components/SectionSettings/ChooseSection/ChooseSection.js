@@ -1,9 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Checkbox, Spinner, Frame, Form, FormLayout, Card, Button, Stack } from '@shopify/polaris';
+import { Checkbox, Form, FormLayout, Card, Button, Stack } from '@shopify/polaris';
 import { useQuery } from 'react-apollo';
 import { GET_PRODUCT_METAFIELD } from '../../../graphql/queries';
 import { SET_METAFIELDS } from '../../../graphql/mutations';
 import MutationPanel from '../../MutationPanel/MutationPanel';
+import MyLoadingComponent from '../../MyLoadingComponent';
 
 const ChooseSection = (props) => {
   const { product } = props;
@@ -34,30 +35,20 @@ const ChooseSection = (props) => {
     }]
   }
 
-  const { data, loading, error } = useQuery(GET_PRODUCT_METAFIELD, {
-    "variables": get_product_metafield_input
+  const { data, loading, error, refetch } = useQuery(GET_PRODUCT_METAFIELD, {
+    "variables": get_product_metafield_input,
+    onCompleted: () => {setChecked(JSON.parse(data.product.metafield.value))}
   });
 
   useEffect(() => {
-    if (data) {
-      const settingsStr = data.product.metafield.value;
-      const settingsObj = JSON.parse(settingsStr);
-      setChecked(settingsObj);
-    }
-  }, [data]);
+    refetch();
+  }, [refetch]);
 
   const handleSubmit = useCallback(() => {
     setSaveChanges(true);
   }, []);
 
-  if (loading) return <Frame>
-    <Card sectioned>
-      <Stack distribution='center' alignment='center'>
-        <Spinner />
-      </Stack>
-    </Card>
-  </Frame>;
-  
+  if (loading) return <MyLoadingComponent />;
   if (error) return <Card sectioned><p>Oops.. error in retrieving section data</p></Card>
 
   return (

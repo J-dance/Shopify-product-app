@@ -1,12 +1,17 @@
 import { useCallback, useState } from 'react'
 import  { Card, Form, FormLayout, Button, Select } from '@shopify/polaris';
+import DesignForm from '../sectionForms/DesignForm';
+import MaterialsForm from '../sectionForms/MaterialsForm';
+import ManufacturingForm from '../sectionForms/ManufacturingForm';
+import LogisticsForm from '../sectionForms/LogisticsForm';
+import CareForm from '../sectionForms/CareForm';
+import EndForm from '../sectionForms/EndForm';
 
 const SectionSettings = (props) => {
   const { product } = props;
-  const [selectedSection, setSelectedSection] = useState()
+  const [selectedSection, setSelectedSection] = useState('design');
 
   const handleSelectChange = useCallback((value) => {
-    console.log(value);
     setSelectedSection(value);
   }, []);
 
@@ -19,23 +24,50 @@ const SectionSettings = (props) => {
     {label: 'End-of-life', value: 'end'},
   ];
 
-  const handleSubmit = useCallback((_event) => {
-    console.log(_event);
-  }, []);
+  const displaySelectedSection = () => {
+    let sectionForm;
+
+    switch (selectedSection) {
+      case 'design':
+        sectionForm = <DesignForm product={product} />
+        break;
+      case 'materials':
+        sectionForm = <MaterialsForm product={product} />
+        break;
+      case 'manufacturing':
+        sectionForm = <ManufacturingForm product={product} />
+        break;
+      case 'logistics':
+        sectionForm = <LogisticsForm product={product} />
+        break;
+      case 'care':
+        sectionForm = <CareForm product={product} />
+        break;
+      case 'end':
+        sectionForm = <EndForm product={product} />
+        break;
+      default:
+        sectionForm = <p>Error finding section data</p>
+    };
+
+    return sectionForm
+  };
 
   return (
     <Card sectioned>
-      <Form onSubmit={handleSubmit}>
-        <FormLayout>
-          <Select 
-            label="Product story section"
-            options={sections}
-            onChange={handleSelectChange}
-            value={selectedSection}
-          />
-          <Button submit>Save</Button>
-        </FormLayout>
-      </Form>
+      <Card.Section>
+        <Select 
+          label="Product story section"
+          options={sections}
+          onChange={handleSelectChange}
+          value={selectedSection}
+        />
+      </Card.Section>
+      <Card.Section>
+        {
+          displaySelectedSection()
+        }
+      </Card.Section>
     </Card>
   )
 }
