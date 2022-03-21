@@ -42,12 +42,15 @@
   <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
     <ul>
       {% for section in sections %}
-        {% assign sectionKey = section | downcase | replace: "&", "and" | replace: " ", "-" %}
-        <li class="listItem">
-          <button id= {{ sectionKey }} value={{ sectionKey }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
-            {{ section }}
-          </button>
-        </li>
+        {% assign sectionTag = section | downcase | replace: "&", "and" | replace: " ", "-" %}
+        {% assign sectionKey = sectionTag | split: "-" %}
+        {% if settings.value[sectionKey[0]] %}
+          <li class="listItem">
+            <button id= {{ sectionTag }} value={{ sectionTag }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
+              {{ section }}
+            </button>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </navbar>

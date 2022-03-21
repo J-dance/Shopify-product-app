@@ -44,7 +44,6 @@ function setBlockLayout () {
   
   if (width >= 420 ) {
     // wide area
-    console.log('apply nav as col');
     outerElement.classList.remove("thin-layout");
     outerElement.classList.add("wide-layout");
     // set width of main-section to 70%
@@ -57,11 +56,9 @@ function setBlockLayout () {
     // set li -> display: inline
     liElements.forEach((element) => {
       element.style.display = "list-item";
-      element.style.margin = '2px';
     })
   } else {
     // thin area
-    console.log('apply nav as row');
     outerElement.classList.remove("wide-layout");
     outerElement.classList.add("thin-layout");
     // set width of main-section to 100%
@@ -74,7 +71,6 @@ function setBlockLayout () {
     // set li -> display: inline
     liElements.forEach((element) => {
       element.style.display = "inline";
-      element.style.margin = '4px 2px';
     })
   }
 }
