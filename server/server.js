@@ -6,6 +6,7 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
+import { getFirstPublishedProduct, createClient, containsAppBlock } from './utilities';
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -102,6 +103,143 @@ app.prepare().then(async () => {
       await handleRequest(ctx);
     }
   });
+
+  /**
+   * This REST endpoint is resposible for returning whether the store's current main theme supports app blocks.
+   */
+  router.get(
+    "/api/store/themes/main",
+    verifyRequest({ authRoute: "/online/auth" }),
+    async (ctx) => {
+      const session = await Shopify.Utils.loadCurrentSession(ctx.req, ctx.res);
+      const clients = {
+        rest: new Shopify.Clients.Rest(session.shop, session.accessToken),
+        graphQL: createClient(session.shop, session.accessToken),
+      };
+
+      // Check if App Blocks are supported
+      // -----------------------------------
+
+      // Specify the name of the template we want our app to integrate with
+      const APP_BLOCK_TEMPLATES = ["product"];
+
+      // Use `client.get` to request list of themes on store
+      const {
+        body: { themes },
+      } = await clients.rest.get({
+        path: "themes",
+      });
+
+      // Find the published theme
+      const publishedTheme = themes.find((theme) => theme.role === "main");
+
+      // Get list of assets contained within the published theme
+      const {
+        body: { assets },
+      } = await clients.rest.get({
+        path: `themes/${publishedTheme.id}/assets`,
+      });
+
+      // Check if template JSON files exist for the template specified in APP_BLOCK_TEMPLATES
+      const templateJSONFiles = assets.filter((file) => {
+        return APP_BLOCK_TEMPLATES.some(
+          (template) => file.key === `templates/${template}.json`
+        );
+      });
+
+      // Get bodies of template JSONs
+      const templateJSONAssetContents = await Promise.all(
+        templateJSONFiles.map(async (file) => {
+          const {
+            body: { asset },
+          } = await clients.rest.get({
+            path: `themes/${publishedTheme.id}/assets`,
+            query: { "asset[key]": file.key },
+          });
+
+          return asset;
+        })
+      );
+
+      // Find what section is set as 'main' for each template JSON's body
+      const templateMainSections = templateJSONAssetContents
+        .map((asset, index) => {
+          const json = JSON.parse(asset.value);
+          const main = json.sections.main && json.sections.main.type;
+
+          return assets.find((file) => file.key === `sections/${main}.liquid`);
+        })
+        .filter((value) => value);
+
+      // Request the content of each section and check if it has a schema that contains a
+      // block of type '@app'
+      const sectionsWithAppBlock = (
+        await Promise.all(
+          templateMainSections.map(async (file, index) => {
+            let acceptsAppBlock = false;
+            const {
+              body: { asset },
+            } = await clients.rest.get({
+              path: `themes/${publishedTheme.id}/assets`,
+              query: { "asset[key]": file.key },
+            });
+
+            const match = asset.value.match(
+              /\{\%\s+schema\s+\%\}([\s\S]*?)\{\%\s+endschema\s+\%\}/m
+            );
+            const schema = JSON.parse(match[1]);
+
+            if (schema && schema.blocks) {
+              acceptsAppBlock = schema.blocks.some((b) => b.type === "@app");
+            }
+
+            return acceptsAppBlock ? file : null;
+          })
+        )
+      ).filter((value) => value);
+
+      /**
+       * Fetch one published product that's later used to build the editor preview url
+       */
+      const product = await getFirstPublishedProduct(clients.graphQL);
+      const editorUrl = `https://${session.shop}/admin/themes/${
+        publishedTheme.id
+      }/editor?previewPath=${encodeURIComponent(
+        `/products/${product?.handle}`
+      )}`;
+
+      /**
+       * This is where we check if the theme supports apps blocks.
+       * To do so, we check if the main-product section supports blocks of type @app
+       */
+      const supportsSe = templateJSONFiles.length > 0;
+      const supportsAppBlocks = supportsSe && sectionsWithAppBlock.length > 0;
+      
+      if (templateJSONFiles.length === sectionsWithAppBlock.length) {
+        console.log('All desired templates have main sections that support app blocks!');
+      } else if (sectionsWithAppBlock.length) {
+        console.log('Only some of the desired templates support app blocks.');
+      } else {
+        console.log("None of the desired templates support app blocks");
+      };
+
+      ctx.body = {
+        theme: publishedTheme,
+        supportsSe,
+        supportsAppBlocks,
+        /**
+         * Check if each of the sample app's app blocks have been added to the product.json template
+         */
+        containsBpsBlock: containsAppBlock(
+          templateJSONAssetContents[0]?.value,
+          "bps",
+          process.env.THEME_APP_EXTENSION_UUID
+        ),
+        editorUrl,
+      };
+      ctx.res.statusCode = 200;
+    }
+  )
 
   server.use(router.allowedMethods());
   server.use(router.routes());
