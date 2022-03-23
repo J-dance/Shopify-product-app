@@ -37,6 +37,7 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
     delete ACTIVE_SHOPIFY_SHOPS[shop],
 });
 
+// using customer koa server and router
 app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
@@ -91,23 +92,10 @@ app.prepare().then(async () => {
     }
   );
 
-  router.get("(/_next/static/.*)", handleRequest); // Static content is clear
-  router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
-  router.get("(.*)", async (ctx) => {
-    const shop = ctx.query.shop;
-
-    // This shop hasn't been seen yet, go through OAuth to create a session
-    if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
-      ctx.redirect(`/auth?shop=${shop}`);
-    } else {
-      await handleRequest(ctx);
-    }
-  });
-
   /**
    * This REST endpoint is resposible for returning whether the store's current main theme supports app blocks.
    */
-  router.get(
+   router.get(
     "/api/store/themes/main",
     verifyRequest({ authRoute: "/online/auth" }),
     async (ctx) => {
@@ -240,6 +228,21 @@ app.prepare().then(async () => {
       ctx.res.statusCode = 200;
     }
   )
+
+  router.get("(/_next/static/.*)", handleRequest); // Static content is clear
+  router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
+  router.get("(.*)", async (ctx) => {
+    // app code in here?
+    const shop = ctx.query.shop;
+
+    // This shop hasn't been seen yet, go through OAuth to create a session
+    if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
+      console.log('authenticating..')
+      ctx.redirect(`/auth?shop=${shop}`);
+    } else {
+      await handleRequest(ctx);
+    }
+  });
 
   server.use(router.allowedMethods());
   server.use(router.routes());
