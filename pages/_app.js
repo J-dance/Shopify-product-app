@@ -54,7 +54,7 @@ function MyProvider(props) {
 
 class MyApp extends App {
   render() {
-    const { Component, pageProps, host } = this.props;
+    const { Component, pageProps, host, shop } = this.props;
     return (
       <AppProvider i18n={translations}>
         <Provider
