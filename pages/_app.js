@@ -54,6 +54,8 @@ function MyProvider(props) {
 class MyApp extends App {
   render() {
     const { Component, pageProps, host, shop } = this.props;
+    console.log('client host:', host);
+    
     return (
       <AppProvider i18n={translations}>
         <Provider
