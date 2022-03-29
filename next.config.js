@@ -7,7 +7,7 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: `frame-ancestors https://${process.env.SHOP} https://admin.shopify.com`
   },
-];
+]
 
 module.exports = {
   webpack: (config) => {
@@ -23,14 +23,13 @@ module.exports = {
 
     return config;
   },
+  async headers() {
+    return [
+      {
+        // Apply these headers to all routes in your application.
+        source: '/:path*',
+        headers: securityHeaders,
+      },
+    ]
+  },
 };
-
-export async function headers() {
-  return [
-    {
-      // Apply these headers to all routes in your application.
-      source: '/:path*',
-      headers: securityHeaders,
-    },
-  ];
-}
