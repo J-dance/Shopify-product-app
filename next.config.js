@@ -23,13 +23,13 @@ module.exports = {
 
     return config;
   },
-  async headers() {
-    return [
-      {
-        // Apply these headers to all routes in your application.
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ]
-  },
+  // async headers() {
+  //   return [
+  //     {
+  //       // Apply these headers to all routes in your application.
+  //       source: '/:path*',
+  //       headers: securityHeaders,
+  //     },
+  //   ]
+  // },
 };
