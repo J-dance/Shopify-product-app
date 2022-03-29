@@ -14,7 +14,6 @@ function userLoggedInFetch(app) {
   
   return async (uri, options) => {
     const response = await fetchFunction(uri, options);
-    console.log('authenticated fetch run');
 
     if (
       response.headers.get("X-Shopify-API-Request-Failure-Reauthorize") === "1"
@@ -55,7 +54,6 @@ function MyProvider(props) {
 class MyApp extends App {
   render() {
     const { Component, pageProps, host, shop } = this.props;
-    console.log('your host is:', host)
     return (
       <AppProvider i18n={translations}>
         <Provider
