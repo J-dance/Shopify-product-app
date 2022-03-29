@@ -35,17 +35,14 @@ export default function Index() {
     "variables": create_private_metafield_input
   });
  
-  // run on app first load
-  useEffect(() => {
-    if (shop.privateMetafields.edges.length === 0) {
-      console.log('new shop alert')
-      addPrivateField()
-      toastNotice.dispatch(Toast.Action.SHOW);
-    } else {
-      console.log('you been ere before')
-      // run api check for results complete
-    }
-  }, [shop, addPrivateField, toastNotice]);
+  if (shop.privateMetafields.edges.length === 0) {
+    console.log('new shop alert')
+    addPrivateField()
+    toastNotice.dispatch(Toast.Action.SHOW);
+  } else {
+    console.log('you been ere before')
+    // run api check for results complete
+  }
 
   error && console.log(error.message);
   data && console.log(data);
