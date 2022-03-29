@@ -72,14 +72,10 @@ class MyApp extends App {
   }
 }
 
-try {
-  MyApp.getInitialProps = async ({ ctx }) => {
-    return {
-      host: ctx.query.host,
-    };
+MyApp.getInitialProps = async ({ ctx }) => {
+  return {
+    host: ctx.query.host,
   };
-} catch(error) {
-  console.log('get initial props error', error);
-}
+};
 
 export default MyApp;
