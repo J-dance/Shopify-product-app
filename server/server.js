@@ -7,7 +7,7 @@ import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
 import { getFirstPublishedProduct, createClient, containsAppBlock } from './utilities';
-import RedisStore from './handlers/CustomSessionStorage';
+// import RedisStore from './handlers/CustomSessionStorage';
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -18,7 +18,7 @@ const app = next({
 const handle = app.getRequestHandler();
 
 // Create a new instance of the custom storage class
-const sessionStorage = new RedisStore();
+// const sessionStorage = new RedisStore();
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
@@ -28,11 +28,7 @@ Shopify.Context.initialize({
   API_VERSION: ApiVersion.October21,
   IS_EMBEDDED_APP: true,
   // Pass the sessionStorage methods to pass into a new instance of `CustomSessionStorage`
-  SESSION_STORAGE: new Shopify.Session.CustomSessionStorage(
-    sessionStorage.storeCallback.bind(sessionStorage),
-    sessionStorage.loadCallback.bind(sessionStorage),
-    sessionStorage.deleteCallback.bind(sessionStorage),
-  ),
+  SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
 });
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
