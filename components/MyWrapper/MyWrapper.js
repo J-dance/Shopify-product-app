@@ -3,9 +3,16 @@ import { useQuery } from "react-apollo";
 import { GET_SHOP } from '../../graphql/queries';
 import { Frame, Loading } from '@shopify/polaris';
 import { ShopContext } from '../../assets/context';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 
 const MyWrapper = (props) => {
   const { children } = props;
+
+  // Create a client
+  const queryClient = new QueryClient()
   
   // get shop details
   const { data, loading, error} = useQuery(GET_SHOP)
@@ -15,7 +22,9 @@ const MyWrapper = (props) => {
 
   return (
     <ShopContext.Provider value={data?.shop}>
-      { children }
+      <QueryClientProvider client={queryClient}>
+        { children }
+      </QueryClientProvider>
     </ShopContext.Provider>
   )
 }
