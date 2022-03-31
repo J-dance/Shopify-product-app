@@ -21,11 +21,9 @@ const MyWrapper = (props) => {
   // data && console.log(data.shop);
 
   return (
-    <ShopContext.Provider value={data?.shop}>
-      <QueryClientProvider client={queryClient}>
-        { children }
-      </QueryClientProvider>
-    </ShopContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      { children }
+    </QueryClientProvider>
   )
 }
 

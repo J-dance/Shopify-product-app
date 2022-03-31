@@ -1,15 +1,18 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Card, Layout } from "@shopify/polaris";
 import MyPageComponent from "../components/MyPageComponent/MyPageComponent";
 import { Redirect, Toast } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { ShopContext } from "../assets/context";
-import { useMutation } from "react-apollo";
-import { CREATE_PRIVATE_METAFIELD } from '../graphql/mutations';
-import { useQuery } from 'react-query';
-import axios from "axios";
+// import { useMutation } from "react-apollo";
+// import { CREATE_PRIVATE_METAFIELD } from '../graphql/mutations';
+// import { useQuery } from 'react-query';
+import { addURLParams } from '../graphql/APICalls';
+import { GET_SHOP } from '../graphql/queries';
+import { useQuery } from "react-apollo";
+import MyLoadingComponent from '../components/MyLoadingComponent';
 
-export default function Index() {
+export default function Index () {
   const shop = useContext(ShopContext);
   const app = useAppBridge();
   const redirect = Redirect.create(app);
@@ -21,58 +24,60 @@ export default function Index() {
 
   const toastNotice = Toast.create(app, toastOptions);
 
-  const create_private_metafield_input = {
-    "input": {
-      "key": "reviewComplete",
-      "namespace": "bps",
-      "owner": `${shop.id}`,
-      "valueInput": {
-        "value": "false",
-        "valueType": "STRING"
-      }
-    }
-  };
+  const { data, loading, error} = useQuery(GET_SHOP);
 
-  const [addPrivateField, { data, loading, error }] = useMutation(CREATE_PRIVATE_METAFIELD, {
-    "variables": create_private_metafield_input
-  });
-
-  const fetchShopData = async(firstName, lastName) => {
+  if (loading) return <MyLoadingComponent />;
+  if (error) return <p>Error! ${error.message}</p>;
+  if (data) {
+    console.log('getshopdata:', data)
     const myHeaders = new Headers();
-    // add content type header to object
     myHeaders.append("Content-Type", "application/json");
-    // using built in JSON utility package turn object to string and store in a variable
-    const raw = JSON.stringify({"firstName":firstName,"lastName":lastName});
-    // create a JSON object with parameters for API call and store in a variable
+
     const requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+        method: 'GET',
+        headers: myHeaders
     };
-    // make API call with parameters and use promises to get response
-    fetch("https://hpy5qebngg.execute-api.eu-west-2.amazonaws.com/dev", requestOptions)
+
+    const params = {
+      id: data.shop.id
+    };
+
+    const url = addURLParams(`${process.env.NEXT_PUBLIC_API_URL}/shop?`, params);
+
+    fetch(url, requestOptions)
     .then(response => response.text())
-    .then(result => console.log(JSON.parse(result).body))
+    .then(result => console.log(JSON.parse(result)))
     .catch(error => console.log('error', error));
-  
   };
 
-  const bendiBackendRes = useQuery('getShop', fetchShopData("Rod", "Stewart"));
-  bendiBackendRes.isError && console.log(bendiBackendRes.error.message);
-  bendiBackendRes.isLoading && console.log('loading bendi data');
+  // const create_private_metafield_input = {
+  //   "input": {
+  //     "key": "reviewComplete",
+  //     "namespace": "bps",
+  //     "owner": `${shop.id}`,
+  //     "valueInput": {
+  //       "value": "false",
+  //       "valueType": "STRING"
+  //     }
+  //   }
+  // };
 
-  if (shop.privateMetafields.edges.length === 0) {
-    console.log('new shop alert')
-    addPrivateField()
-    toastNotice.dispatch(Toast.Action.SHOW);
-  } else {
-    console.log('you been ere before')
-    // run api check for results complete
-  }
+  // const [addPrivateField, { data, loading, error }] = useMutation(CREATE_PRIVATE_METAFIELD, {
+  //   "variables": create_private_metafield_input
+  // });
 
-  error && console.log(error.message);
-  data && console.log(data);
+  // const bendiBackendRes = useQuery('getShop', fetchShopData("Rod", "Stewart"));
+  // bendiBackendRes.isError && console.log(bendiBackendRes.error.message);
+  // bendiBackendRes.isLoading && console.log('loading bendi data');
+
+  // if (shop.privateMetafields.edges.length === 0) {
+  //   console.log('new shop alert')
+  //   addPrivateField()
+  //   toastNotice.dispatch(Toast.Action.SHOW);
+  // } else {
+  //   console.log('you been ere before')
+  //   // run api check for results complete
+  // }
   
   return (
     <MyPageComponent

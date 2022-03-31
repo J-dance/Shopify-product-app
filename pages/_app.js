@@ -7,7 +7,7 @@ import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
-import MyWrapper from '../components/MyWrapper';
+import { ShopContext } from '../assets/context';
 
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
@@ -44,9 +44,7 @@ function MyProvider(props) {
 
   return (
     <ApolloProvider client={client}>
-      <MyWrapper>
-        <Component {...props} />
-      </MyWrapper>
+      <Component {...props} />
     </ApolloProvider>
   );
 }
@@ -54,8 +52,7 @@ function MyProvider(props) {
 class MyApp extends App {
   render() {
     const { Component, pageProps, host, shop } = this.props;
-    console.log('client host:', host);
-    
+
     return (
       <AppProvider i18n={translations}>
         <Provider
@@ -65,7 +62,9 @@ class MyApp extends App {
             forceRedirect: true,
           }}
         >
-          <MyProvider Component={Component} {...pageProps} />
+          <ShopContext.Provider value={shop}>
+            <MyProvider Component={Component} {...pageProps} />
+          </ShopContext.Provider>
         </Provider>
       </AppProvider>
     );
@@ -75,6 +74,7 @@ class MyApp extends App {
 MyApp.getInitialProps = async ({ ctx }) => {
   return {
     host: ctx.query.host,
+    shop: ctx.query.shop
   };
 };
 

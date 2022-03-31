@@ -5,6 +5,18 @@ export const GET_SHOP = gql`
     shop {
       name
       id
+      contactEmail
+      primaryDomain {
+        id
+        host
+        url
+      }
+      url
+      myshopifyDomain
+      plan {
+        displayName
+      }
+      email
       metafields(first: 100) {
         edges {
           node {

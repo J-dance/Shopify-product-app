@@ -37,7 +37,7 @@ const MyPageComponent = (props) => {
 
   // update title bar when data loaded
   shop && myTitleBar.set({
-    title: `Welcome ${shop.name}!`,
+    title: `Welcome ${shop.split('.')[0]}!`,
   });
 
   // add secondary button action
