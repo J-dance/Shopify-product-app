@@ -1,0 +1,3 @@
+import UploadProductsStatusComponent from "./UploadProductsStatusComponent";
+
+export default UploadProductsStatusComponent

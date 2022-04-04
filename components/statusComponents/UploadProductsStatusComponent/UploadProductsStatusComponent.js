@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Card, Icon } from '@shopify/polaris';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
@@ -6,7 +6,7 @@ import {
   CircleTickMajor
 } from '@shopify/polaris-icons';
 
-const SelectProductStatusComponent = () => {
+const UploadProductsStatusComponent = () => {
   const app = useAppBridge();
   const redirect = Redirect.create(app);
 
@@ -16,8 +16,8 @@ const SelectProductStatusComponent = () => {
       title="Shop status"
       footerActionAlignment="left"
       primaryFooterAction={{
-        content: "Select products",
-        onAction:() => {redirect.dispatch(Redirect.Action.APP, '/select-products')}
+        content: "View products",
+        onAction:() => {redirect.dispatch(Redirect.Action.APP, '/settings')}
       }}
     >
       <ul style={{listStyleType: 'none'}}>
@@ -28,10 +28,17 @@ const SelectProductStatusComponent = () => {
           />
           <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
         </li>
+        <li style={{display: 'inline-flex'}}>
+          <Icon
+            source={CircleTickMajor}
+            color="success" 
+          />
+          <p style={{marginLeft: '10px'}}>Products selected</p>
+        </li>
       </ul>
-      <p>Select which products to upload for product stories</p>
+      <p>Upload the required data and evidence where specified for your selected products</p>
     </Card>
   )
 }
 
-export default SelectProductStatusComponent
+export default UploadProductsStatusComponent

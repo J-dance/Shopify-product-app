@@ -10,6 +10,7 @@ import { useQuery } from "react-apollo";
 import MyLoadingComponent from '../components/MyLoadingComponent';
 import NewShopStatusComponent from "../components/statusComponents/NewShopStatusComponent/NewShopStatusComponent";
 import SelectProductStatusComponent from "../components/statusComponents/SelectProductStatusComponent/SelectProductStatusComponent";
+import UploadProductsStatusComponent from "../components/statusComponents/UploadProductsStatusComponent/UploadProductsStatusComponent";
 import { DELETE_PRIVATE_METAFIELD } from "../graphql/mutations";
 import MutationPanel from "../components/MutationPanel/MutationPanel";
 
@@ -56,8 +57,9 @@ export default function Index () {
     console.log('useEffect running');
 
     if (data) {
-      console.log('getshopdata:', data)
-      if (data?.shop.privateMetafields.edges.length) {
+      console.log('getshopdata:', data);
+
+      if (data?.shop.privateMetafields.edges.length !== 0) {
         // shop already exists
         // 2. Use this data to get shop data from backend
         getBackendShopData(data)
@@ -68,8 +70,10 @@ export default function Index () {
       } else {
         // shop is new
         // 3. create a new shop in db.
-        toastNewShop.dispatch(Toast.Action.SHOW);
-        status === '' && setStatus('new shop');
+        if (status === '') {
+          toastNewShop.dispatch(Toast.Action.SHOW);
+          setStatus('new shop');
+        }
       }
     }
   }, [data, toastNewShop, status]);
@@ -107,6 +111,7 @@ export default function Index () {
           {
             status === "new shop" ? <NewShopStatusComponent shop={data.shop} setStatus={setStatus} refetch={refetch} /> :
             status === "select products" ? <SelectProductStatusComponent /> :
+            status === "upload products" ? <UploadProductsStatusComponent /> :
             <MyLoadingComponent />
           }
         </Layout.Section>
