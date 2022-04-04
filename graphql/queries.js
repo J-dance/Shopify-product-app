@@ -16,7 +16,6 @@ export const GET_SHOP = gql`
       plan {
         displayName
       }
-      email
       metafields(first: 100) {
         edges {
           node {

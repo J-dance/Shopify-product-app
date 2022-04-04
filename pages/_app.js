@@ -7,7 +7,8 @@ import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
-import { ShopContext } from '../assets/context';
+import { ShopContext, ShopDataContext } from '../assets/context';
+import { useState } from "react";
 
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
@@ -33,6 +34,7 @@ function userLoggedInFetch(app) {
 
 function MyProvider(props) {
   const app = useAppBridge();
+  const [data, setData] = useState({});
   const client = new ApolloClient({
     fetch: userLoggedInFetch(app),
     fetchOptions: {
@@ -44,7 +46,12 @@ function MyProvider(props) {
 
   return (
     <ApolloProvider client={client}>
-      <Component {...props} />
+      <ShopDataContext.Provider value={{
+        data: data,
+        setData: setData
+      }}>
+        <Component {...props} />
+      </ShopDataContext.Provider>
     </ApolloProvider>
   );
 }
@@ -52,7 +59,7 @@ function MyProvider(props) {
 class MyApp extends App {
   render() {
     const { Component, pageProps, host, shop } = this.props;
-
+    
     return (
       <AppProvider i18n={translations}>
         <Provider

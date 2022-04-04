@@ -2,7 +2,7 @@ import { useMutation } from 'react-apollo';
 import { useEffect } from 'react';
 import { Spinner, Stack } from '@shopify/polaris';
 import { useAppBridge } from "@shopify/app-bridge-react";
-import {Toast} from '@shopify/app-bridge/actions';
+import { Toast } from '@shopify/app-bridge/actions';
 
 const MutationPanel = (props) => {
   const { MUTATION, input, onCompletedAction } = props;
@@ -12,7 +12,7 @@ const MutationPanel = (props) => {
     "variables": input,
     onCompleted:() => { 
       toastNotice.dispatch(Toast.Action.SHOW);
-      onCompletedAction(); 
+      onCompletedAction && onCompletedAction(); 
     }
   });
 
