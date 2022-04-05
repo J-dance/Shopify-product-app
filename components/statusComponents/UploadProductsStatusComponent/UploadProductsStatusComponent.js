@@ -21,19 +21,23 @@ const UploadProductsStatusComponent = () => {
       }}
     >
       <ul style={{listStyleType: 'none'}}>
-        <li style={{display: 'inline-flex'}}>
-          <Icon
-            source={CircleTickMajor}
-            color="success" 
-          />
-          <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
+        <li>
+          <div style={{display: 'inline-flex'}}>
+            <Icon
+              source={CircleTickMajor}
+              color="success" 
+            />
+            <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
+          </div>
         </li>
-        <li style={{display: 'inline-flex'}}>
-          <Icon
-            source={CircleTickMajor}
-            color="success" 
-          />
-          <p style={{marginLeft: '10px'}}>Products selected</p>
+        <li >
+          <div style={{display: 'inline-flex'}}>
+            <Icon
+              source={CircleTickMajor}
+              color="success" 
+            />
+            <p style={{marginLeft: '10px'}}>Products selected</p>
+          </div>
         </li>
       </ul>
       <p>Upload the required data and evidence where specified for your selected products</p>

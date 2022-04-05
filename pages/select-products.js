@@ -24,7 +24,7 @@ const SelectProducts = () => {
   const [products, setProducts] = useState([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const app = useAppBridge();
-  const numProductsOnPlan = 5;
+  const numProductsOnPlan = shopData?.data?.productTier || 3;
 
   const handleSelection = (selectPayload) => {
     // console.log(selectPayload.selection);
@@ -50,7 +50,7 @@ const SelectProducts = () => {
     const raw = JSON.stringify({
       "id": product.id,
       "title": product.title,
-      "owner": shopData?.id
+      "owner": shopData?.data.id
     });
 
     const requestOptions = {
@@ -78,8 +78,9 @@ const SelectProducts = () => {
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-      "id": shopData?.id,
-      "products": productIds
+      "id": shopData?.data.id,
+      "products": productIds,
+      "shopStatus": "upload products"
     });
 
     const requestOptions = {

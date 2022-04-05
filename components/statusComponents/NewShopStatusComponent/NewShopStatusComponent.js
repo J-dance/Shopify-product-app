@@ -1,19 +1,20 @@
-import React from 'react';
-import { Card, Button } from '@shopify/polaris';
+import { useContext } from 'react';
+import { Card } from '@shopify/polaris';
 import { useMutation } from 'react-apollo';
 import { CREATE_PRIVATE_METAFIELD } from '../../../graphql/mutations';
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { Toast } from '@shopify/app-bridge/actions';
+import { ShopDataContext } from '../../../assets/context';
 
 const NewShopStatusComponent = (props) => {
-  const { shop, setStatus, refetch } = props;
+  const shopData = useContext(ShopDataContext);
   const app = useAppBridge();
 
   const create_private_metafield_input = {
     "input": {
       "key": "reviewComplete",
       "namespace": "bps",
-      "owner": `${shop.id}`,
+      "owner": `${shopData?.data.id}`,
       "valueInput": {
         "value": "false",
         "valueType": "STRING"
@@ -32,8 +33,7 @@ const NewShopStatusComponent = (props) => {
     "variables": create_private_metafield_input,
     onCompleted:() => { 
       toastNotice.dispatch(Toast.Action.SHOW);
-      refetch
-      setStatus('select products');
+      shopData?.setData({...shopData?.data, status: 'select products'});
     }
   });
   data && console.log(data);
@@ -48,7 +48,8 @@ const NewShopStatusComponent = (props) => {
       "contactEmail": shop.contactEmail,
       "primaryDomain": shop.primaryDomain,
       "plan": shop.plan,
-      "status": "select products"
+      "shopStatus": "select products",
+      "tier": 4   // number of products on plan
     });
 
     const requestOptions = {
@@ -72,7 +73,7 @@ const NewShopStatusComponent = (props) => {
       footerActionAlignment="left"
       primaryFooterAction={{
         content: "Connect",
-        onAction:() => {postNewShop(shop)}
+        onAction:() => {postNewShop(shopData?.data)}
       }}
     >
       <p>Connect to Bendi to get started with your unique product stories!</p>
