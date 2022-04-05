@@ -7,8 +7,8 @@ import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
-import { ShopContext, ShopDataContext } from '../assets/context';
-import { useState } from "react";
+import { ShopContext } from '../assets/context';
+import ShopDataContextProvider from '../components/ShopDataContextProvider';
 
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
@@ -34,7 +34,6 @@ function userLoggedInFetch(app) {
 
 function MyProvider(props) {
   const app = useAppBridge();
-  const [data, setData] = useState({});
   const client = new ApolloClient({
     fetch: userLoggedInFetch(app),
     fetchOptions: {
@@ -43,23 +42,20 @@ function MyProvider(props) {
   });
 
   const Component = props.Component;
-
   return (
     <ApolloProvider client={client}>
-      <ShopDataContext.Provider value={{
-        data: data,
-        setData: setData
-      }}>
+      <ShopDataContextProvider>
         <Component {...props} />
-      </ShopDataContext.Provider>
+      </ShopDataContextProvider>
     </ApolloProvider>
   );
 }
 
 class MyApp extends App {
+
   render() {
     const { Component, pageProps, host, shop } = this.props;
-    
+
     return (
       <AppProvider i18n={translations}>
         <Provider
@@ -70,7 +66,10 @@ class MyApp extends App {
           }}
         >
           <ShopContext.Provider value={shop}>
-            <MyProvider Component={Component} {...pageProps} />
+            <MyProvider 
+              Component={Component} 
+              {...pageProps}
+            />
           </ShopContext.Provider>
         </Provider>
       </AppProvider>
@@ -79,6 +78,7 @@ class MyApp extends App {
 }
 
 MyApp.getInitialProps = async ({ ctx }) => {
+
   return {
     host: ctx.query.host,
     shop: ctx.query.shop

@@ -21,6 +21,7 @@ const CsvExporter = (props) => {
 
   return (
     <TextContainer>
+      <p>Product selection confirmed!</p>
       <CSVLink data={data} headers={headers}>
         Download CSV template
       </CSVLink>

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import MyPageComponent from '../components/MyPageComponent/MyPageComponent';
-import { ResourcePicker} from '@shopify/app-bridge-react';
+import { ResourcePicker, useAppBridge} from '@shopify/app-bridge-react';
 import { 
   Frame, 
   Layout, 
@@ -10,19 +10,116 @@ import {
   ResourceItem,
   TextStyle,
   Thumbnail,
-  SkeletonThumbnail
+  SkeletonThumbnail,
+  Button
 } from '@shopify/polaris';
 import AddFieldsToProducts from '../components/AddFieldsToProducts';
 import CsvExporter from '../components/CsvExporter/CsvExporter';
+import { Toast } from '@shopify/app-bridge/actions';
+import { ShopDataContext } from '../assets/context';
 
 const SelectProducts = () => {
+  const shopData = useContext(ShopDataContext);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const app = useAppBridge();
   const numProductsOnPlan = 5;
 
   const handleSelection = (selectPayload) => {
+    // console.log(selectPayload.selection);
     setProducts(selectPayload.selection);
     setIsPickerOpen(false);
+  };
+
+  const toastSelectionConfirmed = Toast.create(app, {
+    message: 'Products confirmed',
+    duration: 5000
+  });
+
+  const toastError = Toast.create(app, {
+    message: 'Confirmation error',
+    isError: true,
+    duration: 5000
+  });
+
+  const postProductsToTable = async (product) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      "id": product.id,
+      "title": product.title,
+      "owner": shopData?.id
+    });
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      let res = JSON.parse(result);
+      // console.log(res);
+      return true
+    })
+    .catch(error => {
+      console.log('error', error);
+      return false
+    });
+  };
+
+  const postProductsToShop = async (productIds) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      "id": shopData?.id,
+      "products": productIds
+    });
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/shop`, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      let res = JSON.parse(result);
+      // console.log(res);
+      return true
+    })
+    .catch(error => {
+      console.log('error', error);
+      return false
+    });
+  }
+
+  const handleConfirmation = async() => {
+    // for each product, post to product table and update shop table
+    let productIds = [];
+
+    const result = products.map(async(product) => {
+      productIds.push(product.id);
+      return await postProductsToTable(product);
+    });
+
+    result.push(await postProductsToShop(productIds));
+    let resultArray = await Promise.all(result);
+
+    if (resultArray.every(value => value === true)) {
+      setIsConfirmed(true);
+      toastSelectionConfirmed.dispatch(Toast.Action.SHOW);
+    } else {
+      toastError.dispatch(Toast.Action.SHOW);
+    }
   };
 
   const emptyStateMarkup =
@@ -86,7 +183,15 @@ const SelectProducts = () => {
                 />
               </Card.Section>
               {
-                products.length != 0 && <Card.Section><CsvExporter products={products} /></Card.Section>
+                products.length != 0 && <Card.Section>
+                  {
+                    isConfirmed ? <CsvExporter products={products} /> :
+                    <Button
+                    primary
+                    onClick={() => handleConfirmation()}
+                    >Confirm selection</Button>
+                  }
+                  </Card.Section>
               }
             </Card>
               {
