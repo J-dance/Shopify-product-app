@@ -44,7 +44,7 @@ const ShopDataContextProvider = (props) => {
       } else {
         // shop is new
         // 3. Set new shop as status for pages/index to create a new shop in table
-        setShopData({...data.shop, status: 'new shop'})
+        setShopData({...data?.shop, shopStatus: 'new shop'})
       }
     }
   });

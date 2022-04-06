@@ -17,7 +17,7 @@ const UploadProductsStatusComponent = () => {
       footerActionAlignment="left"
       primaryFooterAction={{
         content: "View products",
-        onAction:() => {redirect.dispatch(Redirect.Action.APP, '/settings')}
+        onAction:() => {redirect.dispatch(Redirect.Action.APP, '/select-products')}
       }}
     >
       <ul style={{listStyleType: 'none'}}>

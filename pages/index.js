@@ -70,7 +70,7 @@ export default function Index () {
             shopData?.data?.shopStatus === "new shop" ? <NewShopStatusComponent /> :
             shopData?.data?.shopStatus === "select products" ? <SelectProductStatusComponent /> :
             shopData?.data?.shopStatus === "upload products" ? <UploadProductsStatusComponent /> :
-            <Card><MyLoadingComponent /></Card>
+            <Card sectioned><MyLoadingComponent /></Card>
           }
         </Layout.Section>
       </Layout>

@@ -33,7 +33,7 @@ const NewShopStatusComponent = (props) => {
     "variables": create_private_metafield_input,
     onCompleted:() => { 
       toastNotice.dispatch(Toast.Action.SHOW);
-      shopData?.setData({...shopData?.data, status: 'select products'});
+      shopData?.setData({...shopData?.data, shopStatus: 'select products'});
     }
   });
   data && console.log(data);

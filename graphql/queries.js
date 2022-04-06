@@ -55,3 +55,51 @@ export const GET_PRODUCT_METAFIELD = gql`
 //   "key": "liner_material",
 //   "ownerId": "gid://shopify/Product/108828309"
 // }
+
+export const QUERY_PRODUCTS = (products) => {
+  let query = '';
+
+  products.forEach((product, index) => {
+    if (index === 0) {
+      query = query.concat(`title:'${product.title}'`)
+    } else {
+      query = query.concat(` OR title:'${product.title}'`)
+    }
+  });
+
+  return gql`
+    {
+      products(first: 20, query: "${query}" ) {
+        edges {
+          node {
+            title
+            id
+            featuredImage {
+              id
+              altText
+              url
+            }
+          }
+        }
+      }
+    }
+  `
+};
+
+export const GET_PRODUCTS = (productIds) => {
+  // construct query
+  let query = {};
+  productIds.forEach((productId, index) => {
+    query[`product${index+1}`] = `product(id: "${productId}") {
+      title
+      id
+      images {
+        altText
+        id
+        url
+      }
+    }`
+  });
+
+  return 1
+}
