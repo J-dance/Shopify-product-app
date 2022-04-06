@@ -9,6 +9,7 @@ import NewShopStatusComponent from "../components/statusComponents/NewShopStatus
 import SelectProductStatusComponent from "../components/statusComponents/SelectProductStatusComponent/SelectProductStatusComponent";
 import UploadProductsStatusComponent from "../components/statusComponents/UploadProductsStatusComponent/UploadProductsStatusComponent";
 import ReviewStatusComponent from "../components/statusComponents/ReviewStatusComponent/ReviewStatusComponent";
+import ReviewCompleteComponent from "../components/statusComponents/ReviewCompleteComponent/ReviewCompleteComponent";
 import { DELETE_PRIVATE_METAFIELD } from "../graphql/mutations";
 import MutationPanel from "../components/MutationPanel/MutationPanel";
 import { Toast } from '@shopify/app-bridge/actions';
@@ -72,6 +73,7 @@ export default function Index () {
             shopData?.data?.shopStatus === "select products" ? <SelectProductStatusComponent /> :
             shopData?.data?.shopStatus === "upload products" ? <UploadProductsStatusComponent /> :
             shopData?.data?.shopStatus === "in review" ? <ReviewStatusComponent /> :
+            shopData?.data?.shopStatus === "review complete" ? <ReviewCompleteComponent /> :
             <Card sectioned><MyLoadingComponent /></Card>
           }
         </Layout.Section>

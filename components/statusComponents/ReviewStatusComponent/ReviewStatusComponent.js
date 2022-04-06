@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon } from '@shopify/polaris';
+import { Card, Icon, TextContainer } from '@shopify/polaris';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
 import {
@@ -46,12 +46,14 @@ const ReviewStatusComponent = () => {
               source={CircleTickMajor}
               color="success" 
             />
-            <p style={{marginLeft: '10px'}}>Products uploaded</p>
+            <p style={{marginLeft: '10px'}}>Product data in review</p>
           </div>
         </li>
       </ul>
-      <p>We are currently reviewing your uploaded product data and evidence for your product stories.</p>
-      <p>We will be in touch when the review is complete!</p>
+      <TextContainer>
+        <p>We are currently reviewing your uploaded product data and evidence for your product stories.</p>
+        <p>We will be in touch when the review is complete!</p>
+      </TextContainer>
     </Card>
   )
 }
