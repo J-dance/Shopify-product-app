@@ -189,7 +189,7 @@ const SelectProducts = (props) => {
                 }
               </Card.Section>
               {
-                isSelectionComplete && <CsvExporter products={products} />
+                isSelectionComplete && <CsvExporter products={shopData?.data?.products ? shopData?.data?.products : products} />
               }
               {
                 products.length != 0 && <Card.Section>
