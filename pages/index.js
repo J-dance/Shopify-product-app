@@ -52,6 +52,7 @@ export default function Index () {
       title="Welcome to Bendi!"
       subtitle="Build your unique product visibility stories and increase customer engagement"
       secondaryAction={{ on: false }}
+      pageName="home"
     >
       <Layout>
         <Layout.Section>
@@ -78,16 +79,16 @@ export default function Index () {
           }
         </Layout.Section>
       </Layout>
-      <Button
+      {/* <Button
         onClick={() => setClearPrivate(true)}
       >
         delete
-      </Button>
-      {
+      </Button> */}
+      {/* {
         clearPrivate && <MutationPanel MUTATION={DELETE_PRIVATE_METAFIELD} input={inputDelete} onCompletedAction={() => {
           setClearPrivate(false);
         }} />
-      }
+      } */}
     </MyPageComponent>
   );
 }

@@ -7,7 +7,7 @@ import { Toast } from '@shopify/app-bridge/actions';
 const MutationPanel = (props) => {
   const { MUTATION, input, onCompletedAction } = props;
   const app = useAppBridge();
-
+  
   const [runMutation, { data, loading, error }] = useMutation(MUTATION, {
     "variables": input,
     onCompleted:() => { 

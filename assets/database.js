@@ -54,49 +54,125 @@ export const end = {
 // image pic 	https://cdn.shopify.com/shopifycloud/web/assets/v1…b195375f31fcb1674823604794398778c01f6c185d702.svg
 
 // "design": {
-//   "name" : "Jojo",
-//   "location" : "Bristol",
-//   "isCircularity" : true
+//   "M" : {
+//     "name" : {
+//       "S" : "Jojo"
+//     },
+//     "location" : {
+//       "S" : "Bristol"
+//     },
+//     "isCircularity" : {
+//       "BOOL": true
+//     }
+//   }
 // },
 // "materials": {
-//   "primary" : {
-//       "material" : "Cotton",
-//       "certificate" : "Certified"
-//   },
-//   "secondary" : {
-//       "material" : "Polyester"
-//   },
-//   "additionalInformation" : "Some extra text about the product composition.."
+//   "M" : {
+//     "primary" : {
+//       "M" : {
+//         "material" : {
+//           "S" : "Cotton"
+//         },
+//         "certificate" : {
+//           "S" : "Certified"
+//         }
+//       }
+//     },
+//     "secondary" : {
+//       "M" : {
+//         "material" : {
+//           "S" : "Polyester"
+//         }
+//       }
+//     },
+//     "additionalInformation" : {
+//       "S" : "Some extra text about the product composition.."
+//     }
+//   }
 // },
 // "manufacturing" : {
-//   "supplier" : {
-//       "name" : "MegaSupplier",
-//       "address" : "BE12 ND13, Street, City, UK",
-//       "type" : "supplier type",
-//       "OARId" : null,
-//       "livingWageEmployer" : true,
-//       "auditInformation" : [],
-//       "energyInformation" : []
-//  }
+//   "M" : {
+//     "supplier" : {
+//       "M" : {
+//         "name" : {
+//           "S" : "MegaSupplier"
+//         },
+//         "address" : {
+//           "S" : "BE12 ND13, Street, City, UK"
+//         },
+//         "type" : {
+//           "S" : "supplier type"
+//         },
+//         "OARId" : {
+//           "NULL" : true
+//         },
+//         "livingWageEmployer" : {
+//           "BOOL" : true
+//         },
+//         "auditInformation" : {
+//           "L" : [
+
+//           ]
+//         },
+//         "energyInformation" : {
+//           "L" : [
+
+//           ]
+//         }
+//       }
+//     }
+//   }
 // },
 // "logistics" : {
-//   "modeOfTransport" : "Boat",
-//   "packaging" : {
-//       "type" : "Fungi",
-//       "quality" : "super"
-//   },
-//   "warehouse" : {
-//       "location" : "London",
-//       "energy" : "Renewable"
+//   "M" : {
+//     "modeOfTransport" : {
+//       "S" : "Boat"
+//     },
+//     "packaging" : {
+//       "M" : {
+//         "type" : {
+//           "S" : "Fungi"
+//         },
+//         "quality" : {
+//           "S" : "super"
+//         }
+//       }
+//     },
+//     "warehouse" : {
+//       "M" : {
+//         "location" : {
+//           "S" : "London"
+//         },
+//         "energy" : {
+//           "S" : "Renewable"
+//         }
+//       }
+//     }
 //   }
 // },
 // "care" : {
-//   "washSettings" : "settings here..",
-//   "instructions" : "instruction here..",
-//   "repair" : null
+//   "M" : {
+//     "washSettings" : {
+//       "S" : "settings here.."
+//     },
+//     "instructions" : {
+//       "S" : "instruction here.."
+//     },
+//     "repair" : {
+//       "NULL" : true
+//     }
+//   }
 // },
 // "end" : {
-//   "expNumWears" : "500",
-//   "recycle" : "you can recycle this easy.",
-//   "takeBackScheme" : null
+//   "M" : {
+//     "expNumWears" : {
+//       "S" : "500"
+//     },
+//     "recycle" : {
+//       "S" : "you can recycle this easy."
+//     },
+//     "takeBackScheme" : {
+//       "NULL" : true
+//     }
+//   }
 // }

@@ -1,4 +1,4 @@
-import { DisplayText, TextContainer } from '@shopify/polaris';
+import { Card, DisplayText, TextContainer } from '@shopify/polaris';
 import React from 'react'
 import { CSVLink } from "react-csv";
 
@@ -20,13 +20,15 @@ const CsvExporter = (props) => {
   });
 
   return (
-    <TextContainer>
-      <p>Product selection confirmed!</p>
-      <CSVLink data={data} headers={headers}>
-        Download CSV template
-      </CSVLink>
-      <DisplayText size='small'>Email completed template to shopify@bendi.wtf</DisplayText>
-    </TextContainer>
+    <Card.Section>
+      <TextContainer>
+        <p>Product selection confirmed!</p>
+        <CSVLink data={data} headers={headers}>
+          Download CSV template
+        </CSVLink>
+        <DisplayText size='small'>Email completed template to shopify@bendi.wtf</DisplayText>
+      </TextContainer>
+    </Card.Section>
   )
 }
 

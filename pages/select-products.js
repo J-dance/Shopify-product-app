@@ -9,7 +9,7 @@ import {
   Button,
   Loading
 } from '@shopify/polaris';
-import AddFieldsToProducts from '../components/AddFieldsToProducts';
+// import AddFieldsToProducts from '../components/AddFieldsToProducts';
 import CsvExporter from '../components/CsvExporter/CsvExporter';
 import { Toast } from '@shopify/app-bridge/actions';
 import { ShopDataContext } from '../assets/context';
@@ -169,7 +169,7 @@ const SelectProducts = (props) => {
       title="Product selection"
       subtitle={isSelectionComplete ? "View your selected products below" : "Choose which products to upload for their unique product stories"}
       pageName="selectProducts"
-      secondaryAction={{
+      secondaryAction={ !isConfirmed && {
         on: true,
         label: "Select products",
         action: () => {
@@ -203,11 +203,11 @@ const SelectProducts = (props) => {
                   </Card.Section>
               }
             </Card>
-            {
-              products.length != 0 && <Card sectioned>
-                <AddFieldsToProducts products={products} />
-              </Card>
-            }
+            {/* {
+              products.length != 0 && <Card sectioned> */}
+                {/* <AddFieldsToProducts products={products} /> */}
+              {/* </Card>
+            } */}
           </Layout.Section>
           <ResourcePicker 
             resourceType='Product'

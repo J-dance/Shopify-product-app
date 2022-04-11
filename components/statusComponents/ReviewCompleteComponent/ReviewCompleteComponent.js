@@ -11,6 +11,7 @@ import ImportProductStories from './ImportProductStories/ImportProductStories';
 const ReviewCompleteComponent = () => {
   const [isImporting, setIsImporting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const app = useAppBridge();
   const redirect = Redirect.create(app);
 
@@ -79,13 +80,16 @@ const ReviewCompleteComponent = () => {
         <Stack alignment='center'>
           <Button
             primary
+            disabled={isComplete}
             loading={isLoading}
             onClick={handleImport}
           >
-            Import
+            {
+              isComplete ? "Complete" : "Import"
+            }
           </Button>
           {
-            isImporting && <ImportProductStories setIsLoading={setIsLoading} />
+            isImporting && <ImportProductStories setIsLoading={setIsLoading} setIsComplete={setIsComplete} />
           }
         </Stack>
       </Stack>
