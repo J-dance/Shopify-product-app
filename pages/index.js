@@ -1,57 +1,58 @@
-import { useContext, useEffect } from "react";
-import { Card, Layout } from "@shopify/polaris";
+import { useContext, useState, useEffect } from "react";
+import { Card, Layout, Button } from "@shopify/polaris";
 import MyPageComponent from "../components/MyPageComponent/MyPageComponent";
-import { Redirect, Toast } from '@shopify/app-bridge/actions';
+import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { ShopContext } from "../assets/context";
-import { useMutation } from "react-apollo";
-import { CREATE_PRIVATE_METAFIELD } from '../graphql/mutations';
+import { ShopDataContext } from "../assets/context";
+import MyLoadingComponent from '../components/MyLoadingComponent';
+import NewShopStatusComponent from "../components/statusComponents/NewShopStatusComponent/NewShopStatusComponent";
+import SelectProductStatusComponent from "../components/statusComponents/SelectProductStatusComponent/SelectProductStatusComponent";
+import UploadProductsStatusComponent from "../components/statusComponents/UploadProductsStatusComponent/UploadProductsStatusComponent";
+import ReviewStatusComponent from "../components/statusComponents/ReviewStatusComponent/ReviewStatusComponent";
+import ReviewCompleteComponent from "../components/statusComponents/ReviewCompleteComponent/ReviewCompleteComponent";
+import { DELETE_PRIVATE_METAFIELD } from "../graphql/mutations";
+import MutationPanel from "../components/MutationPanel/MutationPanel";
+import { Toast } from '@shopify/app-bridge/actions';
 
-export default function Index() {
-  const shop = useContext(ShopContext);
+// to limit bendi api calls - only call shop data here and update private metafields with all data
+export default function Index () {
+  const shopData = useContext(ShopDataContext);
   const app = useAppBridge();
   const redirect = Redirect.create(app);
-
-  const toastOptions = {
+  // const [status, setStatus] = useState('');
+  const [clearPrivate, setClearPrivate] = useState(false);
+  
+  const toastNewShop = Toast.create(app, {
     message: 'New store detected',
-    duration: 5000,
-  };
+    duration: 5000
+  });
 
-  const toastNotice = Toast.create(app, toastOptions);
+  const toastShopFound = Toast.create(app, {
+    message: 'Store connected',
+    duration: 5000
+  });
 
-  const create_private_metafield_input = {
+  useEffect(() => {
+    if (shopData?.data?.shopStatus === 'new shop') {
+      toastNewShop.dispatch(Toast.Action.SHOW);
+    } else if (typeof shopData?.data?.shopStatus === 'string') {
+      toastShopFound.dispatch(Toast.Action.SHOW);
+    }
+  }, [shopData?.data, toastNewShop, toastShopFound]);
+
+  const inputDelete = {
     "input": {
       "key": "reviewComplete",
-      "namespace": "bps",
-      "owner": `${shop.id}`,
-      "valueInput": {
-        "value": "false",
-        "valueType": "STRING"
-      }
+      "namespace": "bps"
     }
-  };
-
-  const [addPrivateField, { data, loading, error }] = useMutation(CREATE_PRIVATE_METAFIELD, {
-    "variables": create_private_metafield_input
-  });
- 
-  // if (shop.privateMetafields.edges.length === 0) {
-  //   console.log('new shop alert')
-  //   addPrivateField()
-  //   toastNotice.dispatch(Toast.Action.SHOW);
-  // } else {
-  //   console.log('you been ere before')
-  //   // run api check for results complete
-  // }
-
-  error && console.log(error.message);
-  data && console.log(data);
+  }
   
   return (
     <MyPageComponent
       title="Welcome to Bendi!"
       subtitle="Build your unique product visibility stories and increase customer engagement"
       secondaryAction={{ on: false }}
+      pageName="home"
     >
       <Layout>
         <Layout.Section>
@@ -68,8 +69,26 @@ export default function Index() {
               Head over to our onboarding page to get started with adding your product stories!
             </p>
           </Card>
+          {
+            shopData?.data?.shopStatus === "new shop" ? <NewShopStatusComponent /> :
+            shopData?.data?.shopStatus === "select products" ? <SelectProductStatusComponent /> :
+            shopData?.data?.shopStatus === "upload products" ? <UploadProductsStatusComponent /> :
+            shopData?.data?.shopStatus === "in review" ? <ReviewStatusComponent /> :
+            shopData?.data?.shopStatus === "review complete" ? <ReviewCompleteComponent /> :
+            <Card sectioned><MyLoadingComponent /></Card>
+          }
         </Layout.Section>
       </Layout>
+      {/* <Button
+        onClick={() => setClearPrivate(true)}
+      >
+        delete
+      </Button> */}
+      {/* {
+        clearPrivate && <MutationPanel MUTATION={DELETE_PRIVATE_METAFIELD} input={inputDelete} onCompletedAction={() => {
+          setClearPrivate(false);
+        }} />
+      } */}
     </MyPageComponent>
   );
 }

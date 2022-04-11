@@ -25,10 +25,15 @@ Shopify.Context.initialize({
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
   SCOPES: process.env.SCOPES.split(","),
   HOST_NAME: process.env.HOST.replace(/https:\/\/|\/$/g, ""),
-  API_VERSION: ApiVersion.October21,
+  API_VERSION: ApiVersion.January22,
   IS_EMBEDDED_APP: true,
   // Pass the sessionStorage methods to pass into a new instance of `CustomSessionStorage`
   SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
+  // new Shopify.Session.CustomSessionStorage(
+  //   sessionStorage.storeCallback.bind(sessionStorage),
+  //   sessionStorage.loadCallback.bind(sessionStorage),
+  //   sessionStorage.deleteCallback.bind(sessionStorage),
+  // ),
 });
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should

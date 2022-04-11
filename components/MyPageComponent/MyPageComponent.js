@@ -37,7 +37,7 @@ const MyPageComponent = (props) => {
 
   // update title bar when data loaded
   shop && myTitleBar.set({
-    title: `Welcome ${shop.name}!`,
+    title: `Welcome ${shop.split('.')[0]}!`,
   });
 
   // add secondary button action
@@ -55,6 +55,11 @@ const MyPageComponent = (props) => {
   };
 
   // set navigation menu up
+  const homeLink = AppLink.create(app, {
+    label: 'Home',
+    destination: '/',
+  });
+
   const onboardingLink = AppLink.create(app, {
     label: 'Onboarding',
     destination: '/onboarding',
@@ -71,11 +76,12 @@ const MyPageComponent = (props) => {
   });
   
   const navigationMenu = NavigationMenu.create(app, {
-    items: [onboardingLink, selectProductsLink, settingsLink],
+    items: [homeLink, onboardingLink, selectProductsLink, settingsLink],
     active: undefined,
   });
 
   // set active page
+  pageName === "home" && navigationMenu.set({active: homeLink});
   pageName === "onboarding" && navigationMenu.set({active: onboardingLink});
   pageName === "selectProducts" && navigationMenu.set({active: selectProductsLink});
   pageName === "settings" && navigationMenu.set({active: settingsLink});

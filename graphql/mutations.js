@@ -95,3 +95,15 @@ export const CREATE_METAFIELD_DEFINITION = gql`
     }
   }
 `
+
+export const DELETE_PRIVATE_METAFIELD = gql`
+  mutation privateMetafieldDelete($input: PrivateMetafieldDeleteInput!) {
+    privateMetafieldDelete(input: $input) {
+      deletedPrivateMetafieldId
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
