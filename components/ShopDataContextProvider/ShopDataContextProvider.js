@@ -32,7 +32,7 @@ const ShopDataContextProvider = (props) => {
 
   const { data, loading, error} = useQuery(GET_SHOP, {
     onCompleted: () => {
-      console.log('getshopdata:', data);
+      // console.log('getshopdata:', data);
       if (data?.shop.privateMetafields.edges.length !== 0) {
         // shop already exists
         // 2. Use this data to get shop data from backend
