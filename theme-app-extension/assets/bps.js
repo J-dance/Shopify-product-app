@@ -42,7 +42,7 @@ function setBlockLayout () {
   const width = outerElement.offsetWidth;
   console.log(width);
   
-  if (width >= 420 ) {
+  if (width >= 430 ) {
     // wide area
     outerElement.classList.remove("thin-layout");
     outerElement.classList.add("wide-layout");

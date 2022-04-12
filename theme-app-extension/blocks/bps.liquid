@@ -62,9 +62,7 @@
       </div>
       <p class="heading">Who designed it?</p>
       <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
-      {% if design.value.isCicularity %}
-        <p>This is a circular item</p>
-      {% endif %}
+      <p>{{ design.value.isCircularity}}</p>
     </main-section>
   {% endif %}
   
@@ -76,16 +74,18 @@
       <p class="heading">What is it made of?</p>
       <div class="flex-row">
         {% render "tick" %}
-        <p>Primary material is <span class="bold">{{ materials.value.primary.material }}</span></p>
+        <p>Primary material is <span class="bold">{{ materials.value.primary.material }} from supplier, {{ materials.value.primary.supplier }}</span></p>
       </div>
       <div class="flex-row">
         {% render "tick" %}
         <p><span class="bold">{{ materials.value.primary.certificate }}</span></p>
       </div>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
-      </div>
+      {% if materials.value.secondary.material %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
+        </div>
+      {% endif %}
       <p>{{ materials.value.additionalInformation }}</p>
     </main-section>
   {% endif %}
@@ -100,7 +100,25 @@
         {% render "tick" %}
         <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span></p>
       </div>
-      
+      {% if manufacturing.value.supplier.livingWageEmployer %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p><span class="bold"></span>Living wage employer</span></p>
+        </div>
+      {% endif %}
+      {% for audit in manufacturing.value.supplier.auditInformation %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p><span class="bold"></span>{{ audit }}</span></p>
+        </div>
+      {% endfor %}
+      {% for energy in manufacturing.value.supplier.energyInformation %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p><span class="bold"></span>{{ energy }}</span></p>
+        </div>
+      {% endfor %}
+      <p>{{ manufacturing.value.waste }}</p>
       <p>Address: {{ manufacturing.value.supplier.address }}</p>
     </main-section>
   {% endif %}
@@ -113,15 +131,19 @@
       <p class="heading">How did it get here?</p>
       <div class="flex-row">
         {% render "tick" %}
-        <p>Transportation by <span class="bold">{{ logistics.modeOfTransport }}</span></p>
+        <p>Transportation by <span class="bold">{{ logistics.value.modeOfTransport }}</span></p>
       </div>
+      {% if logistics.value.warehouse.location %}
+        {% if logistics.value.warehouse.energy %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>Our warehouse in {{ logistics.value.warehouse.location }} uses <span class="bold">{{ logistics.value.warehouse.energy }} energy</span></p>
+          </div>
+        {% endif %}
+      {% endif %}
       <div class="flex-row">
         {% render "tick" %}
-        <p>Our warehouse in {{ logistics.value.warehouse.location }} uses <span class="bold">{{ logistics.value.warehouse.energy }} energy</span></p>
-      </div>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p><span class="bold">{{ logistics.value.packaging.quality }} {{ logistics.value.packaging.type }}</span> packaging</p>
+        <p><span class="bold">{{ logistics.value.packaging.type }}</span> packaging</p>
       </div>
     </main-section>
   {% endif %}
@@ -134,13 +156,18 @@
       <p class="heading">How should I look after it?</p>
       <div class="flex-row">
         {% render "tick" %}
-        <p>Washing at: <span class="bold">{{ care.value.washSettings }}</span></p>
+        <p>{{ care.value.washInfo }}</p>
       </div>
       <div class="flex-row">
         {% render "tick" %}
         <p>Use a <span class="bold">guppi bag</span></p>
       </div>
-      <p>Washing instructions: {{ care.value.instructions }}</p>
+      {% if care.value.repair %}
+      <div class="flex-row">
+        {% render "tick" %}
+        <p><span class="bold">Repair service offered</span></p>
+      </div>
+    {% endif %}
     </main-section>
   {% endif %}
 
@@ -150,17 +177,15 @@
         <p class="title">Product journey</p>
       </div>
       <p class="heading">What happens after?</p>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>Designed to be worn <span class="bold">{{ end.value.expNumWears }}+ times</span></p>
-      </div>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p><span class="bold">Recycle</span> or <span class="bold">resell</span> to avoid landfill</p>
-      </div>
-      <p>Recyclability - {{ end.value.recycle }} </p>
+      <p>Designed to be worn {{ end.value.expNumWears }}</p>
+      {% if end.value.recycle.show %}
+        <div class="flex-row">
+          <p>Recycling page</p>
+          <a href="{{ end.value.recycle.link }}" target="_blank">{% render "panel" %}</a>
+        </div>
+      {% endif %}
       {% if end.value.takeBackScheme %}
-        <p>This product has a tacke back scheme!</p>
+        <p>This product has a take back scheme!</p>
       {% else %}
         <p>This product does not have a take back scheme</p>
       {% endif %}
@@ -210,8 +235,14 @@
     {
       "type": "number",
       "id": "bold_weight",
-      "label": "Bold font weight",
+      "label": "Heading text font weight",
       "default": 700
+    },
+    {
+      "type": "number",
+      "id": "font_weight",
+      "label": "Bold text font weight",
+      "default": 600
     }
   ]
 }
