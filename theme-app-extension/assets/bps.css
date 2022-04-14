@@ -8,10 +8,31 @@ p {
 }
 
 story-container {
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr auto;
   width: 100%;
   height: 100%;
   padding: 5px 0px;
+}
+
+content-container {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+footer {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  border-top: 1px solid black;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 
 /* apply on initialization */
@@ -24,6 +45,7 @@ story-container {
 .wide-layout {
   flex-direction: row;
   justify-content: end;
+  align-items: flex-start;
 }
 
 navbar {
@@ -41,8 +63,8 @@ navbar ul {
 }
 
 navbar li {
-  padding: 2px 3.5px;
-  margin: 4px 2px;
+  padding: 0px 3.5px;
+  margin: 0px 2px;
 }
 
 .nav-item {
@@ -69,4 +91,41 @@ navbar li {
   display: flex;
   flex-direction: row;
   margin: 2px 0px;
+}
+
+.bullet {
+  display: block !important;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  background-color: #AFA9A9;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  margin: 4px 0px;
+}
+
+.bulletContainer {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: 1fr auto 1fr;
+  height: 50px;
+  width: auto;
+  margin: 0px 7px;
+}
+
+.dottedLineContainer {
+  display: grid;
+  grid-template-columns: 0.625fr 0.375fr;
+  height: max-content;
+  width: 100%;
+  height: 100%;
+}
+
+.dottedLine {display: block !important;
+  height: 100%;
+  width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  border-right: 2px dashed #AFA9A9;
 }

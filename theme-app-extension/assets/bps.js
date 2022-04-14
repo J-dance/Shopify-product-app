@@ -16,6 +16,19 @@ function setAllSectionsInvisible () {
   });
 };
 
+function setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets) {
+  // set non active links
+  nonActiveLinks.forEach((sectionLinks) => {
+    sectionLinks.forEach((link) => link.style.borderRight = "2px dashed #AFA9A9");
+  });
+  nonActiveBullets.forEach((bullet) => bullet.style.background = "#AFA9A9");
+  // set active links
+  activeLinks.forEach((sectionLinks) => {
+    sectionLinks.forEach((link) => link.style.borderRight = "2px solid black");
+  });
+  activeBullets.forEach((bullet) => bullet.style.background = "black");
+}
+
 function setActiveSection (section) {
   // remove invisible class for active nav section
   document.getElementById(`${section}-section`)
@@ -24,6 +37,67 @@ function setActiveSection (section) {
   // add active state to button
   document.getElementById(section)
     .classList.add("active");
+
+  // set all dots and dashes to black for relevant section
+  const designBullet = document.getElementById('designBullet');
+  const materialsLinks = document.querySelectorAll('.materialsLink');
+  const materialsBullet = document.getElementById('materialsBullet');
+  const manufacturingLinks = document.querySelectorAll('.manufacturingLink');
+  const manufacturingBullet = document.getElementById('manufacturingBullet');
+  const logisticsLinks = document.querySelectorAll('.logisticsLink');
+  const logisticsBullet = document.getElementById('logisticsBullet');
+  const careAndUseLinks = document.querySelectorAll('.careAndUseLink');
+  const careAndUseBullet = document.getElementById('careAndUseBullet');
+  const endOfLifeLinks = document.querySelectorAll('.endOfLifeLink');
+  const endOfLifeBullet = document.getElementById('endOfLifeBullet');
+  let nonActiveLinks = [];
+  let nonActiveBullets = [];
+  let activeBullets = [];
+  let activeLinks = [];
+
+  switch(section) {
+    case 'design':
+      nonActiveLinks = [materialsLinks, manufacturingLinks, logisticsLinks, careAndUseLinks, endOfLifeLinks];
+      nonActiveBullets = [materialsBullet, manufacturingBullet, logisticsBullet, careAndUseBullet, endOfLifeBullet];
+      activeBullets = [designBullet];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    case 'materials':
+      nonActiveLinks = [manufacturingLinks, logisticsLinks, careAndUseLinks, endOfLifeLinks];
+      nonActiveBullets = [manufacturingBullet, logisticsBullet, careAndUseBullet, endOfLifeBullet];
+      activeBullets = [designBullet, materialsBullet];
+      activeLinks = [materialsLinks];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    case 'manufacturing':
+      nonActiveLinks = [logisticsLinks, careAndUseLinks, endOfLifeLinks];
+      nonActiveBullets = [logisticsBullet, careAndUseBullet, endOfLifeBullet];
+      activeBullets = [designBullet, materialsBullet, manufacturingBullet];
+      activeLinks = [materialsLinks, manufacturingLinks];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    case 'logistics':
+      nonActiveLinks = [careAndUseLinks, endOfLifeLinks];
+      nonActiveBullets = [careAndUseBullet, endOfLifeBullet];
+      activeBullets = [designBullet, materialsBullet, manufacturingBullet, logisticsBullet];
+      activeLinks = [materialsLinks, manufacturingLinks, logisticsLinks];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    case 'care-and-use':
+      nonActiveLinks = [endOfLifeLinks];
+      nonActiveBullets = [endOfLifeBullet];
+      activeBullets = [designBullet, materialsBullet, manufacturingBullet, logisticsBullet, careAndUseBullet];
+      activeLinks = [materialsLinks, manufacturingLinks, logisticsLinks, careAndUseLinks];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    case 'end-of-life':
+      activeBullets = [designBullet, materialsBullet, manufacturingBullet, logisticsBullet, careAndUseBullet, endOfLifeBullet];
+      activeLinks = [materialsLinks, manufacturingLinks, logisticsLinks, careAndUseLinks, endOfLifeLinks];
+      setTimeline(nonActiveLinks, nonActiveBullets, activeLinks, activeBullets);
+      break
+    default:
+      break
+  }
 }
 
 function setSection (event) {
@@ -35,7 +109,7 @@ function setSection (event) {
 }
 
 function setBlockLayout () {
-  const outerElement = document.getElementById("story-container");
+  const outerElement = document.getElementById("content-container");
   const mainElements = document.querySelectorAll(".main-section");
   const liElements = document.querySelectorAll(".listItem");
   const ulElement = document.querySelector("ul");
@@ -55,7 +129,8 @@ function setBlockLayout () {
     ulElement.style.display = "block"
     // set li -> display: inline
     liElements.forEach((element) => {
-      element.style.display = "list-item";
+      element.style.display = "flex";
+      element.style.alignItems = 'center';
     })
   } else {
     // thin area

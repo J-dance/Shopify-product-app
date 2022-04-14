@@ -18,7 +18,7 @@
     align-items: center;
     padding:0px 0px 3px 0px;
     margin-bottom: 14px;
-    border-bottom: 2px solid {{ block.settings.primary_color }};
+    border-bottom: 3px solid {{ block.settings.primary_color }};
   }
 
   .bold {
@@ -34,164 +34,209 @@
 {% assign logistics = product.metafields.bps.logistics %}
 {% assign care = product.metafields.bps.care %}
 {% assign end = product.metafields.bps.end %}
+{% assign sectionIcons = "designIcon, materialsIcon, manufacturingIcon, logisticsIcon, careAndUseIcon, endOfLifeIcon" | split: ", " %}
+{% assign counter = 0 %}
 
 <story-container id="story-container" style="
   color: {{ block.settings.font_color }};
   border: 1px solid {{ block.settings.border_color }}
 ">
-  <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
-    <ul>
-      {% for section in sections %}
-        {% assign sectionTag = section | downcase | replace: "&", "and" | replace: " ", "-" %}
-        {% assign sectionKey = sectionTag | split: "-" %}
-        {% if settings.value[sectionKey[0]] %}
-          <li class="listItem">
-            <button id= {{ sectionTag }} value={{ sectionTag }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
-              {{ section }}
-            </button>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </navbar>
+  <content-container id="content-container">
+    <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
+      <ul>
+        {% for section in sections %}
+          {% assign sectionTag = section | downcase | replace: "&", "and" | replace: " ", "-" %}
+          {% assign sectionKey = sectionTag | split: "-" %}
+          {% if settings.value[sectionKey[0]] %}
+            {% assign handle = sectionIcons[counter] %}
+            <li class="listItem">
+              {% case handle %}
+                {% when "designIcon" %}
+                  {% render "designIcon" %}
+                  <div class="bulletContainer">
+                    <div class="dottedLineContainer">
+                      <div></div>
+                    </div>
+                    <div id="designBullet" class="bullet"></div>
+                    <div class="dottedLineContainer">
+                      <div class=" materialsLink dottedLine"></div>
+                    </div>
+                  </div>
+                {% when "materialsIcon" %}
+                  {% render "materialsIcon" %}
+                  {% render "bullet-dashed-line", bulletId: "materialsBullet", link1: "materialsLink", link2: "manufacturingLink" %}
+                {% when "manufacturingIcon" %}
+                  {% render "manufacturingIcon" %}
+                  {% render "bullet-dashed-line", bulletId: "manufacturingBullet", link1: "manufacturingLink", link2: "logisticsLink" %}
+                {% when "logisticsIcon" %}
+                  {% render "logisticsIcon" %}
+                  {% render "bullet-dashed-line", bulletId: "logisticsBullet", link1: "logisticsLink", link2: "careAndUseLink" %}
+                {% when "careAndUseIcon" %}
+                  {% render "careAndUseIcon" %}
+                  {% render "bullet-dashed-line", bulletId: "careAndUseBullet", link1: "careAndUseLink", link2: "endOfLifeLink" %}
+                {% when "endOfLifeIcon" %}
+                  {% render "endOfLifeIcon" %}
+                  <div class="bulletContainer">
+                    <div class="dottedLineContainer">
+                      <div class="dottedLine endOfLifeLink"></div>
+                    </div>
+                    <div id="endOfLifeBullet" class="bullet"></div>
+                    <div class="dottedLineContainer">
+                      <div></div>
+                    </div>
+                  </div>
+              {% endcase %}
+              <button id= {{ sectionTag }} value={{ sectionTag }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
+                {{ section }}
+              </button>
+            </li>
+          {% endif %}
+          {% assign counter = counter | plus: 1 %}
+        {% endfor %}
+      </ul>
+    </navbar>
 
-  {% if settings.value.design %}
-    <main-section id="design-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">Who designed it?</p>
-      <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
-      <p>{{ design.value.isCircularity}}</p>
-    </main-section>
-  {% endif %}
-  
-  {% if settings.value.materials %}
-    <main-section id="materials-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">What is it made of?</p>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>Primary material is <span class="bold">{{ materials.value.primary.material }} from supplier, {{ materials.value.primary.supplier }}</span></p>
-      </div>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p><span class="bold">{{ materials.value.primary.certificate }}</span></p>
-      </div>
-      {% if materials.value.secondary.material %}
+    {% if settings.value.design %}
+      <main-section id="design-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">Who designed it?</p>
+        <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
+        <p>{{ design.value.isCircularity}}</p>
+      </main-section>
+    {% endif %}
+    
+    {% if settings.value.materials %}
+      <main-section id="materials-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">What is it made of?</p>
         <div class="flex-row">
           {% render "tick" %}
-          <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
+          <p>Primary material is <span class="bold">{{ materials.value.primary.material }} from supplier, {{ materials.value.primary.supplier }}</span></p>
         </div>
-      {% endif %}
-      <p>{{ materials.value.additionalInformation }}</p>
-    </main-section>
-  {% endif %}
-
-  {% if settings.value.manufacturing %}
-    <main-section id="manufacturing-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">Where was it made?</p>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span></p>
-      </div>
-      {% if manufacturing.value.supplier.livingWageEmployer %}
         <div class="flex-row">
           {% render "tick" %}
-          <p><span class="bold"></span>Living wage employer</span></p>
+          <p><span class="bold">{{ materials.value.primary.certificate }}</span></p>
         </div>
-      {% endif %}
-      {% for audit in manufacturing.value.supplier.auditInformation %}
-        <div class="flex-row">
-          {% render "tick" %}
-          <p><span class="bold"></span>{{ audit }}</span></p>
-        </div>
-      {% endfor %}
-      {% for energy in manufacturing.value.supplier.energyInformation %}
-        <div class="flex-row">
-          {% render "tick" %}
-          <p><span class="bold"></span>{{ energy }}</span></p>
-        </div>
-      {% endfor %}
-      <p>{{ manufacturing.value.waste }}</p>
-      <p>Address: {{ manufacturing.value.supplier.address }}</p>
-    </main-section>
-  {% endif %}
-  
-  {% if settings.value.logistics %}
-    <main-section id="logistics-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">How did it get here?</p>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>Transportation by <span class="bold">{{ logistics.value.modeOfTransport }}</span></p>
-      </div>
-      {% if logistics.value.warehouse.location %}
-        {% if logistics.value.warehouse.energy %}
+        {% if materials.value.secondary.material %}
           <div class="flex-row">
             {% render "tick" %}
-            <p>Our warehouse in {{ logistics.value.warehouse.location }} uses <span class="bold">{{ logistics.value.warehouse.energy }} energy</span></p>
+            <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
           </div>
         {% endif %}
-      {% endif %}
-      <div class="flex-row">
-        {% render "tick" %}
-        <p><span class="bold">{{ logistics.value.packaging.type }}</span> packaging</p>
-      </div>
-    </main-section>
-  {% endif %}
-
-  {% if settings.value.care %}
-    <main-section id="care-and-use-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">How should I look after it?</p>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>{{ care.value.washInfo }}</p>
-      </div>
-      <div class="flex-row">
-        {% render "tick" %}
-        <p>Use a <span class="bold">guppi bag</span></p>
-      </div>
-      {% if care.value.repair %}
-      <div class="flex-row">
-        {% render "tick" %}
-        <p><span class="bold">Repair service offered</span></p>
-      </div>
+        <p>{{ materials.value.additionalInformation }}</p>
+      </main-section>
     {% endif %}
-    </main-section>
-  {% endif %}
 
-  {% if settings.value.end %}
-    <main-section id="end-of-life-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
-      <div class="title-container">
-        <p class="title">Product journey</p>
-      </div>
-      <p class="heading">What happens after?</p>
-      <p>Designed to be worn {{ end.value.expNumWears }}</p>
-      {% if end.value.recycle.show %}
+    {% if settings.value.manufacturing %}
+      <main-section id="manufacturing-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">Where was it made?</p>
         <div class="flex-row">
-          <p>Recycling page</p>
-          <a href="{{ end.value.recycle.link }}" target="_blank">{% render "panel" %}</a>
+          {% render "tick" %}
+          <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span></p>
+        </div>
+        {% if manufacturing.value.supplier.livingWageEmployer %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p><span class="bold"></span>Living wage employer</span></p>
+          </div>
+        {% endif %}
+        {% for audit in manufacturing.value.supplier.auditInformation %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p><span class="bold"></span>{{ audit }}</span></p>
+          </div>
+        {% endfor %}
+        {% for energy in manufacturing.value.supplier.energyInformation %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p><span class="bold"></span>{{ energy }}</span></p>
+          </div>
+        {% endfor %}
+        <p>{{ manufacturing.value.waste }}</p>
+        <p>Address: {{ manufacturing.value.supplier.address }}</p>
+      </main-section>
+    {% endif %}
+    
+    {% if settings.value.logistics %}
+      <main-section id="logistics-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">How did it get here?</p>
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>Transportation by <span class="bold">{{ logistics.value.modeOfTransport }}</span></p>
+        </div>
+        {% if logistics.value.warehouse.location %}
+          {% if logistics.value.warehouse.energy %}
+            <div class="flex-row">
+              {% render "tick" %}
+              <p>Our warehouse in {{ logistics.value.warehouse.location }} uses <span class="bold">{{ logistics.value.warehouse.energy }} energy</span></p>
+            </div>
+          {% endif %}
+        {% endif %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p><span class="bold">{{ logistics.value.packaging.type }}</span> packaging</p>
+        </div>
+      </main-section>
+    {% endif %}
+
+    {% if settings.value.care %}
+      <main-section id="care-and-use-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">How should I look after it?</p>
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>{{ care.value.washInfo }}</p>
+        </div>
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>Use a <span class="bold">guppi bag</span></p>
+        </div>
+        {% if care.value.repair %}
+        <div class="flex-row">
+          {% render "tick" %}
+          <p><span class="bold">Repair service offered</span></p>
         </div>
       {% endif %}
-      {% if end.value.takeBackScheme %}
-        <p>This product has a take back scheme!</p>
-      {% else %}
-        <p>This product does not have a take back scheme</p>
-      {% endif %}
-    </main-section>
-  {% endif %}
+      </main-section>
+    {% endif %}
 
+    {% if settings.value.end %}
+      <main-section id="end-of-life-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
+        <div class="title-container">
+          <p class="title">Product journey</p>
+        </div>
+        <p class="heading">What happens after?</p>
+        <p>Designed to be worn {{ end.value.expNumWears }}</p>
+        {% if end.value.recycle.show %}
+          <div class="flex-row">
+            <p>Recycling page</p>
+            <a href="{{ end.value.recycle.link }}" target="_blank">{% render "panel" %}</a>
+          </div>
+        {% endif %}
+        {% if end.value.takeBackScheme %}
+          <p>This product has a take back scheme!</p>
+        {% else %}
+          <p>This product does not have a take back scheme</p>
+        {% endif %}
+      </main-section>
+    {% endif %}
+  </content-container>
+  <footer>
+    {% render "poweredBy" %}
+    {% render "bendiLogo" %}
+  </footer>
 </story-container>
 
 {% schema %}
