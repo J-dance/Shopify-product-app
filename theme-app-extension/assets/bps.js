@@ -119,11 +119,12 @@ function setBlockLayout () {
   const thinIcons = document.querySelectorAll(".thinIconLayout");
   const buttonTextArray = document.querySelectorAll(".buttonContentWideLayout");
   const width = outerElement.offsetWidth;
-  
+
   if (width >= 430 ) {
     // wide area
     outerElement.classList.remove("thin-layout");
     outerElement.classList.add("wide-layout");
+    timeLineElement.forEach((ele) => ele.style.display = "grid");
     // set width of main-section to 70%
     mainElements.forEach((element) => {
       element.style.width = "70%";
@@ -149,6 +150,7 @@ function setBlockLayout () {
     // set width of main-section to 100%
     mainElements.forEach((element) => {
       element.style.width = "100%";
+      element.style.minHeight = "330px";
       element.style.padding = "10px 20px 0px 20px";
     });
     footerElement.style.margin = "10px 20px 0px 20px";

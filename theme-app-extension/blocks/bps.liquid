@@ -6,6 +6,7 @@
   .heading {
     color: {{ block.settings.secondary_font_color }};
     font-weight: {{ block.settings.bold_weight }};
+    margin-bottom: 8px;
   }
 
   .title {
@@ -39,8 +40,7 @@
 {% assign counter = 0 %}
 
 <story-container id="story-container" style="
-  color: {{ block.settings.font_color }};
-  border: 1px solid {{ block.settings.border_color }}
+  color: {{ block.settings.primary_font_color }};
 ">
   <content-container id="content-container">
     <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
@@ -165,9 +165,18 @@
           <p class="title">Product journey</p>
         </div>
         <p class="heading">Where was it made?</p>
-        <div class="flex-row">
-          {% render "tick" %}
-          <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span></p>
+        <div class="flex-row" style="align-items: center; margin-bottom: 4px;">
+          {% render "uk" %}
+          <div style="
+            background: #F9F9F9; 
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+          ">
+            <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span> in {{ manufacturing.value.supplier.address }}</p>
+          </div>
         </div>
         {% if manufacturing.value.supplier.livingWageEmployer %}
           <div class="flex-row">
@@ -195,11 +204,10 @@
             </p>
           </div>
         {% endif %}
-          <div class="flex-row">
-            {% render "tick" %}
-            <p>{{ manufacturing.value.waste }}</p>
-          </div>
-        <p>Address: {{ manufacturing.value.supplier.address }}</p>
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>{{ manufacturing.value.waste }}</p>
+        </div>
       </main-section>
     {% endif %}
     
@@ -316,12 +324,6 @@
       "id": "secondary_font_color",
       "label": "Secondary font color",
       "default": "#64697A"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border color",
-      "default": "#000000"
     },
     {
       "type": "number",
