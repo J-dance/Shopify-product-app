@@ -101,7 +101,7 @@ function setActiveSection (section) {
 }
 
 function setSection (event) {
-  const section = event.target.value;
+  const section = this.value;
   // set all sections invisible first
   setAllSectionsInvisible();
   // then set active section
@@ -112,9 +112,13 @@ function setBlockLayout () {
   const outerElement = document.getElementById("content-container");
   const mainElements = document.querySelectorAll(".main-section");
   const liElements = document.querySelectorAll(".listItem");
-  const ulElement = document.querySelector("ul");
+  const timeLineElement = document.querySelectorAll(".bulletContainer");
+  const ulElement = document.getElementById("listContainer");
+  const footerElement = document.querySelector("footer");
+  const wideIcons = document.querySelectorAll(".wideIconLayout");
+  const thinIcons = document.querySelectorAll(".thinIconLayout");
+  const buttonTextArray = document.querySelectorAll(".buttonContentWideLayout");
   const width = outerElement.offsetWidth;
-  console.log(width);
   
   if (width >= 430 ) {
     // wide area
@@ -126,27 +130,37 @@ function setBlockLayout () {
       element.style.padding = "10px 0px 0px 0px";
     });
     // set ul -> display block
-    ulElement.style.display = "block"
+    ulElement.style.display = "block";
     // set li -> display: inline
     liElements.forEach((element) => {
       element.style.display = "flex";
       element.style.alignItems = 'center';
-    })
+      element.style.padding = "0px 3.5px";
+      element.style.margin = "0px 2px";
+    });
+    wideIcons.forEach((iconEle) => iconEle.style.display = "block");
+    thinIcons.forEach((icon) => icon.style.display = "none");
+    buttonTextArray.forEach((button) => button.style.display = "block");
   } else {
     // thin area
     outerElement.classList.remove("wide-layout");
     outerElement.classList.add("thin-layout");
+    timeLineElement.forEach((ele) => ele.style.display = "none");
     // set width of main-section to 100%
     mainElements.forEach((element) => {
       element.style.width = "100%";
       element.style.padding = "10px 20px 0px 20px";
     });
+    footerElement.style.margin = "10px 20px 0px 20px";
     // set ul -> display flex
-    ulElement.style.display = "flex"
+    ulElement.style.display = "inline-flex";
     // set li -> display: inline
     liElements.forEach((element) => {
       element.style.display = "inline";
-    })
+    });
+    wideIcons.forEach((iconEle) => iconEle.style.display = "none");
+    thinIcons.forEach((icon) => icon.style.display = "block");
+    buttonTextArray.forEach((button) => button.style.display = "none");
   }
 }
 
@@ -154,7 +168,6 @@ function setBlockLayout () {
 function initializeBlock () {
   setBlockLayout();
   setActiveSection(renderedSectionElements[0].id)
-
   // add functions to nav-items
   renderedSections.forEach((section) => {
     const element = document.getElementById(section);

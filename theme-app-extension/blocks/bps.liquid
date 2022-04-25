@@ -27,6 +27,7 @@
 </style>
 
 {% assign sections = "Design, Materials, Manufacturing, Logistics, Care & Use, End-of-life" | split: ", " %}
+{% assign designerImage = product.metafields.bps.designerImage %}
 {% assign settings = product.metafields.bps.settings %}
 {% assign design = product.metafields.bps.design %}
 {% assign materials = product.metafields.bps.materials %}
@@ -43,7 +44,7 @@
 ">
   <content-container id="content-container">
     <navbar style="border-bottom: 1px solid {{ block.settings.secondary_color }};">
-      <ul>
+      <ul id="listContainer">
         {% for section in sections %}
           {% assign sectionTag = section | downcase | replace: "&", "and" | replace: " ", "-" %}
           {% assign sectionKey = sectionTag | split: "-" %}
@@ -52,7 +53,7 @@
             <li class="listItem">
               {% case handle %}
                 {% when "designIcon" %}
-                  {% render "designIcon" %}
+                  {% render "designIcon", class: "wideIconLayout" %}
                   <div class="bulletContainer">
                     <div class="dottedLineContainer">
                       <div></div>
@@ -63,19 +64,19 @@
                     </div>
                   </div>
                 {% when "materialsIcon" %}
-                  {% render "materialsIcon" %}
+                  {% render "materialsIcon", class: "wideIconLayout" %}
                   {% render "bullet-dashed-line", bulletId: "materialsBullet", link1: "materialsLink", link2: "manufacturingLink" %}
                 {% when "manufacturingIcon" %}
-                  {% render "manufacturingIcon" %}
+                  {% render "manufacturingIcon", class: "wideIconLayout" %}
                   {% render "bullet-dashed-line", bulletId: "manufacturingBullet", link1: "manufacturingLink", link2: "logisticsLink" %}
                 {% when "logisticsIcon" %}
-                  {% render "logisticsIcon" %}
+                  {% render "logisticsIcon", class: "wideIconLayout" %}
                   {% render "bullet-dashed-line", bulletId: "logisticsBullet", link1: "logisticsLink", link2: "careAndUseLink" %}
                 {% when "careAndUseIcon" %}
-                  {% render "careAndUseIcon" %}
+                  {% render "careAndUseIcon", class: "wideIconLayout" %}
                   {% render "bullet-dashed-line", bulletId: "careAndUseBullet", link1: "careAndUseLink", link2: "endOfLifeLink" %}
                 {% when "endOfLifeIcon" %}
-                  {% render "endOfLifeIcon" %}
+                  {% render "endOfLifeIcon", class: "wideIconLayout" %}
                   <div class="bulletContainer">
                     <div class="dottedLineContainer">
                       <div class="dottedLine endOfLifeLink"></div>
@@ -86,8 +87,22 @@
                     </div>
                   </div>
               {% endcase %}
-              <button id= {{ sectionTag }} value={{ sectionTag }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
-                {{ section }}
+              <button id={{ sectionTag }} value={{ sectionTag }} class="nav-item" style="background: {{ block.settings.secondary_color }};">
+                <p class="buttonContentWideLayout">{{ section }}</p>
+                {% case handle %}
+                  {% when "designIcon" %}
+                    {% render "designIcon", class: "thinIconLayout" %}
+                  {% when "materialsIcon" %}
+                    {% render "materialsIcon", class: "thinIconLayout" %}
+                  {% when "manufacturingIcon" %}
+                    {% render "manufacturingIcon", class: "thinIconLayout" %}
+                  {% when "logisticsIcon" %}
+                    {% render "logisticsIcon", class: "thinIconLayout" %}
+                  {% when "careAndUseIcon" %}
+                    {% render "careAndUseIcon", class: "thinIconLayout" %}
+                  {% when "endOfLifeIcon" %}
+                    {% render "endOfLifeIcon", class: "thinIconLayout" %}
+                {% endcase %}
               </button>
             </li>
           {% endif %}
@@ -95,15 +110,23 @@
         {% endfor %}
       </ul>
     </navbar>
-
     {% if settings.value.design %}
       <main-section id="design-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
           <p class="title">Product journey</p>
         </div>
         <p class="heading">Who designed it?</p>
-        <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
-        <p>{{ design.value.isCircularity}}</p>
+        <div class="flex-row" style="align-items: flex-start;">
+          {% if designerImage %}
+            <div style="margin-top: 2px;">
+              <div class="designerImageContainer">
+                <img style="object-fit: cover;" width="50" height="50" src="{{ designerImage | img_url }}" alt="Designer image" />
+              </div>
+            </div>
+          {% endif %}
+          <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
+        </div>
+        <p style="margin-top: 8px;">{{ design.value.isCircularity}}</p>
       </main-section>
     {% endif %}
     
@@ -127,7 +150,12 @@
             <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
           </div>
         {% endif %}
-        <p>{{ materials.value.additionalInformation }}</p>
+        {% if materials.value.secondary.additionalInformation %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>{{ materials.value.additionalInformation }}</p>
+          </div>
+        {% endif %}
       </main-section>
     {% endif %}
 
@@ -144,22 +172,33 @@
         {% if manufacturing.value.supplier.livingWageEmployer %}
           <div class="flex-row">
             {% render "tick" %}
-            <p><span class="bold"></span>Living wage employer</span></p>
+            <p><span class="bold">Living wage employer</span></p>
           </div>
         {% endif %}
-        {% for audit in manufacturing.value.supplier.auditInformation %}
+        {% if manufacturing.value.supplier.auditInformation %}
           <div class="flex-row">
             {% render "tick" %}
-            <p><span class="bold"></span>{{ audit }}</span></p>
+            <p>
+              {% for audit in manufacturing.value.supplier.auditInformation %}
+                <span class="bold">{{ audit }}</span>
+              {% endfor %}
+            </p>
           </div>
-        {% endfor %}
-        {% for energy in manufacturing.value.supplier.energyInformation %}
+        {% endif %}
+        {% if manufacturing.value.supplier.energyInformation.length %}
           <div class="flex-row">
             {% render "tick" %}
-            <p><span class="bold"></span>{{ energy }}</span></p>
+            <p>
+              {% for energy in manufacturing.value.supplier.energyInformation %}
+                <span class="bold"></span>{{ energy }}</span>
+              {% endfor %}
+            </p>
           </div>
-        {% endfor %}
-        <p>{{ manufacturing.value.waste }}</p>
+        {% endif %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>{{ manufacturing.value.waste }}</p>
+          </div>
         <p>Address: {{ manufacturing.value.supplier.address }}</p>
       </main-section>
     {% endif %}
@@ -218,15 +257,22 @@
           <p class="title">Product journey</p>
         </div>
         <p class="heading">What happens after?</p>
-        <p>Designed to be worn {{ end.value.expNumWears }}</p>
+        <div class="flex-row">
+          {% render "tick" %}
+          <p>Designed to be worn {{ end.value.expNumWears }}</p>
+        </div>
         {% if end.value.recycle.show %}
           <div class="flex-row">
+            {% render "tick" %}
             <p>Recycling page</p>
             <a href="{{ end.value.recycle.link }}" target="_blank">{% render "panel" %}</a>
           </div>
         {% endif %}
         {% if end.value.takeBackScheme %}
-          <p>This product has a take back scheme!</p>
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>This product has a take back scheme!</p>
+          </div>
         {% else %}
           <p>This product does not have a take back scheme</p>
         {% endif %}
