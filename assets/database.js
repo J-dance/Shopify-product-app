@@ -176,3 +176,105 @@ export const end = {
 //     }
 //   }
 // }
+
+// "design": {
+//   "name": "Jojo",
+//   "location": "Bristol",
+//   "isCircularity": true
+//  },
+//  "logistics": {
+//   "warehouse": {
+//    "location": "London",
+//    "energy": "Renewable"
+//   },
+//   "modeOfTransport": "Boat",
+//   "packaging": {
+//    "type": "Fungi",
+//    "quality": "super"
+//   }
+//  },
+//  "manufacturing": {
+//   "supplier": {
+//    "energyInformation": [],
+//    "address": "BE12 ND13, Street, City, UK",
+//    "OARId": null,
+//    "name": "MegaSupplier",
+//    "livingWageEmployer": true,
+//    "type": "supplier type",
+//    "auditInformation": []
+//   }
+//  },
+//  "materials": {
+//   "secondary": {
+//    "material": "Polyester"
+//   },
+//   "additionalInformation": "Some extra text about the product composition..",
+//   "primary": {
+//    "material": "Cotton",
+//    "certificate": "Certified"
+//   }
+//  },
+//  "end": {
+//   "recycle": "you can recycle this easy.",
+//   "expNumWears": "500",
+//   "takeBackScheme": null
+//  },
+//  "care": {
+//   "washSettings": "settings here..",
+//   "instructions": "instruction here..",
+//   "repair": null
+//  },
+
+// "design": {
+//   "name": "Jen Yuen / Josh King-Archer",
+//   "location": "London",
+//   "isCircularity": "Desgined for circularity/ Mono material to ease the maintenance, re-use and effective disassembly/recycling of product/ Modular garment to increase useability, longevity and repair."
+//  },
+//  "logistics": {
+//   "warehouse": {
+//    "location": null,
+//    "energy": null
+//   },
+//   "modeOfTransport": "Public Transport",
+//   "packaging": {
+//    "type": "biodegradble brown paper"
+//   }
+//  },
+//  "manufacturing": {
+//   "supplier": {
+//    "energyInformation": [],
+//    "address": "London, England",
+//    "OARId": null,
+//    "name": "Fashion Enter Ltd",
+//    "livingWageEmployer": true,
+//    "type": "Cut, Make, Trim",
+//    "auditInformation": [
+//         "Fast Forward Fashion",
+//         "SEDEX"
+//     ]
+//   },
+//   "waste" : "Production on demand model. (Waste material used in construction for following garments)"
+//  },
+//  "materials": {
+//   "secondary": {
+//    "material": null
+//   },
+//   "additionalInformation": "Bio Bleach for cleanliness. Corozo buttons",
+//   "primary": {
+//    "material": "Upcycled cotton",
+//    "supplier" : "Mint Vintage",
+//    "certificate": "Ribbing/Thread is Gots Certified"
+//   }
+//  },
+//  "end": {
+//   "recycle": {
+//       "show": true,
+//       "link": "https://www.ja-clothing.com/recycle"
+//   },
+//   "expNumWears": "80-120. This garment is designed to last a long time and to be easily repaired or have faulty parts replaced also the look can be changed so i'd expect a higher no of wears 200+",
+//   "takeBackScheme": true
+//  },
+//  "care": {
+//   "washInfo": "Cold wash. Modular elements mean only affected areas need cleaning at customer discretion eg body could be washed without sleeves, or sleeves could be washed without body",
+//   "repair": true
+//  }
