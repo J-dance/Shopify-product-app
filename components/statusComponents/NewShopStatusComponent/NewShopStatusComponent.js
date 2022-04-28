@@ -76,7 +76,7 @@ const NewShopStatusComponent = (props) => {
         onAction:() => {postNewShop(shopData?.data)}
       }}
     >
-      <p>Connect to Bendi to get started with your unique product stories!</p>
+      <p>Connect to Bendi to get started with your unique product visibility reports!</p>
     </Card>
   )
 }

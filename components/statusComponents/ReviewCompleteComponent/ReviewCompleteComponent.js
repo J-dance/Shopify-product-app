@@ -72,10 +72,10 @@ const ReviewCompleteComponent = () => {
       </ul>
       <Stack spacing="loose" vertical>
         <TextContainer>
-          <p>Your product stories ar ready! Congratulations 🎉</p>
-          <p>Import your product story data below</p>
-          <p>Follow the instruction in step 5 of the onboarding instructions to add your product stories</p>
-          <p>Customise your product stories in the settings section</p>
+          <p>Your product visibility reports are ready! Congratulations 🎉</p>
+          <p>Import your product report data below</p>
+          <p>Follow the instruction in step 5 of the onboarding instructions to add your product reports</p>
+          <p>Customise your product visibility reports in the settings section</p>
         </TextContainer>
         <Stack alignment='center'>
           <Button

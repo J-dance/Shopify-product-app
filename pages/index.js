@@ -50,7 +50,7 @@ export default function Index () {
   return (
     <MyPageComponent
       title="Welcome to Bendi!"
-      subtitle="Build your unique product visibility stories and increase customer engagement"
+      subtitle="Build your unique product visibility report and increase customer engagement"
       secondaryAction={{ on: false }}
       pageName="home"
     >
@@ -66,7 +66,7 @@ export default function Index () {
                 }
               }]}>
             <p>
-              Head over to our onboarding page to get started with adding your product stories!
+              Head over to our onboarding page to get started with adding your product visibility reports!
             </p>
           </Card>
           {

@@ -29,7 +29,7 @@ const SelectProductStatusComponent = () => {
           <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
         </li>
       </ul>
-      <p>Select which products to upload for product stories</p>
+      <p>Select which products to upload for product reports</p>
     </Card>
   )
 }

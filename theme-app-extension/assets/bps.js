@@ -120,7 +120,7 @@ function setBlockLayout () {
   const buttonTextArray = document.querySelectorAll(".buttonContentWideLayout");
   const width = outerElement.offsetWidth;
 
-  if (width >= 430 ) {
+  if (width >= 440 ) {
     // wide area
     outerElement.classList.remove("thin-layout");
     outerElement.classList.add("wide-layout");

@@ -6,7 +6,7 @@ const Onboarding = () => {
   return (
     <MyPageComponent
       title="Onboarding"
-      subtitle="Follow the instructions to get started with creating your unique product stories"
+      subtitle="Follow the instructions to get started with creating your unique product visibility reports"
       pageName="onboarding"
       secondaryAction={{ on: false }}
     >
@@ -15,16 +15,11 @@ const Onboarding = () => {
           <Layout.Section secondary>
             <Card 
               sectioned 
-              title="Step 1"
-              primaryFooterAction={{
-                content: 'Create account',
-                onAction:() => {console.log('create account')}
-              }}
-              footerActionAlignment="left" 
+              title="Step 1" 
             >
               <TextContainer>
                 <p>
-                  Create an account for your shop with Bendi so we can begin creating your product stories
+                  Connect your shop with Bendi so we can begin creating your product reports
                 </p>
               </TextContainer>
             </Card>
@@ -36,7 +31,7 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Select the products you wish to upload to Bendi for product stories
+                  Select the products you wish to upload to Bendi for product reports
                 </p>
                 <p>
                   Then download the template with the products selected and email the completed template to shopify@bendi.wtf
@@ -81,10 +76,13 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Your product stories are ready!
+                  Your product visbility reports are ready!
                 </p>
                 <p>
-                  Add the product stories to your product page templates in the theme editor (link here).
+                  {`Add the product reports to your product page templates in the theme editor (link here). We recommend creating a new product page template by duplicating your current product template and renaming this to something memorable such as 'product_page_with_report'.`}
+                </p>
+                <p>
+                  {`Click 'add block' once on the product template page in the theme editor and select the Bendi option then preview and save. Next, go to your store products in the admin portal and select the new product template with the visibility report for each product necessary and save.`}
                 </p>
                 <p>
                   Customise appearance in the theme editor settings, add and edit product story data in the settings tab in the bendi app, aswell as in the product pages under metafields (link here).
