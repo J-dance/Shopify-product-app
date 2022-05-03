@@ -5,7 +5,7 @@ const apiKey = JSON.stringify(process.env.SHOPIFY_API_KEY);
 const securityHeaders = [ 
   { 
     key: "Content-Security-Policy",
-    value: `frame-ancestors https://${process.env.SHOP} https://admin.shopify.com`
+    value: `frame-ancestors https://*.myshopify.com https://admin.shopify.com;`
   },
 ]
 
@@ -23,13 +23,13 @@ module.exports = {
 
     return config;
   },
-  // async headers() {
-  //   return [
-  //     {
-  //       // Apply these headers to all routes in your application.
-  //       source: '/:path*',
-  //       headers: securityHeaders,
-  //     },
-  //   ]
-  // },
+  async headers() {
+    return [
+      {
+        // Apply these headers to all routes in your application.
+        source: '/:path*',
+        headers: securityHeaders,
+      },
+    ]
+  },
 };
