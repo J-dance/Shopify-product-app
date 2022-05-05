@@ -116,7 +116,7 @@
           <p class="title">Product journey</p>
         </div>
         <p class="heading">Who designed it?</p>
-        <div class="flex-row" style="align-items: flex-start;">
+        <div class="flex-row" style="align-items: flex-start; margin-bottom: 8px;">
           {% if designerImage %}
             <div style="margin-top: 2px;">
               <div class="designerImageContainer">
@@ -124,9 +124,14 @@
               </div>
             </div>
           {% endif %}
-          <p>Our designer, <span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
+          <p><span class="bold">{{ design.value.name }}</span> in our <span class="bold">{{ design.value.location }} studio</span></p>
         </div>
-        <p style="margin-top: 8px;">{{ design.value.isCircularity}}</p>
+        {% for ele in design.value.text %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>{{ ele }}</p>
+          </div>
+        {% endfor %}
       </main-section>
     {% endif %}
     
@@ -136,26 +141,12 @@
           <p class="title">Product journey</p>
         </div>
         <p class="heading">What is it made of?</p>
-        <div class="flex-row">
-          {% render "tick" %}
-          <p>Primary material is <span class="bold">{{ materials.value.primary.material }} from supplier, {{ materials.value.primary.supplier }}</span></p>
-        </div>
-        <div class="flex-row">
-          {% render "tick" %}
-          <p><span class="bold">{{ materials.value.primary.certificate }}</span></p>
-        </div>
-        {% if materials.value.secondary.material %}
+        {% for ele in materials.value.text %}
           <div class="flex-row">
             {% render "tick" %}
-            <p>Other materials: <span class="bold">{{ materials.value.secondary.material }}</span></p>
+            <p><span class="bold">{{ ele.item }}</span>: {{ ele.text }}</p>
           </div>
-        {% endif %}
-        {% if materials.value.secondary.additionalInformation %}
-          <div class="flex-row">
-            {% render "tick" %}
-            <p>{{ materials.value.additionalInformation }}</p>
-          </div>
-        {% endif %}
+        {% endfor %}
       </main-section>
     {% endif %}
 
@@ -165,7 +156,7 @@
           <p class="title">Product journey</p>
         </div>
         <p class="heading">Where was it made?</p>
-        <div class="flex-row" style="align-items: center; margin-bottom: 4px;">
+        <div class="flex-row" style="align-items: center; margin-bottom: 8px;">
           {% render "uk" %}
           <div style="
             background: #F9F9F9; 
@@ -175,39 +166,15 @@
             justify-content: center;
             margin-left: 15px;
           ">
-            <p> Made by our supplier, <span class="bold">{{ manufacturing.value.supplier.name }}</span> in {{ manufacturing.value.supplier.address }}</p>
+            <p> Made by <span class="bold">{{ manufacturing.value.supplier.name }}</span> in {{ manufacturing.value.supplier.address }}</p>
           </div>
         </div>
-        {% if manufacturing.value.supplier.livingWageEmployer %}
+        {% for ele in manufacturing.value.text %}
           <div class="flex-row">
             {% render "tick" %}
-            <p><span class="bold">Living wage employer</span></p>
+            <p>{{ ele }}</p>
           </div>
-        {% endif %}
-        {% if manufacturing.value.supplier.auditInformation %}
-          <div class="flex-row">
-            {% render "tick" %}
-            <p>
-              {% for audit in manufacturing.value.supplier.auditInformation %}
-                <span class="bold">{{ audit }}</span>
-              {% endfor %}
-            </p>
-          </div>
-        {% endif %}
-        {% if manufacturing.value.supplier.energyInformation.length %}
-          <div class="flex-row">
-            {% render "tick" %}
-            <p>
-              {% for energy in manufacturing.value.supplier.energyInformation %}
-                <span class="bold"></span>{{ energy }}</span>
-              {% endfor %}
-            </p>
-          </div>
-        {% endif %}
-        <div class="flex-row">
-          {% render "tick" %}
-          <p>{{ manufacturing.value.waste }}</p>
-        </div>
+        {% endfor %}
       </main-section>
     {% endif %}
     
@@ -221,17 +188,9 @@
           {% render "tick" %}
           <p>Transportation by <span class="bold">{{ logistics.value.modeOfTransport }}</span></p>
         </div>
-        {% if logistics.value.warehouse.location %}
-          {% if logistics.value.warehouse.energy %}
-            <div class="flex-row">
-              {% render "tick" %}
-              <p>Our warehouse in {{ logistics.value.warehouse.location }} uses <span class="bold">{{ logistics.value.warehouse.energy }} energy</span></p>
-            </div>
-          {% endif %}
-        {% endif %}
         <div class="flex-row">
           {% render "tick" %}
-          <p><span class="bold">{{ logistics.value.packaging.type }}</span> packaging</p>
+          <p><span class="bold">{{ logistics.value.packaging.type }}</span> {{ logistics.value.packaging.name }}</p>
         </div>
       </main-section>
     {% endif %}
@@ -244,18 +203,14 @@
         <p class="heading">How should I look after it?</p>
         <div class="flex-row">
           {% render "tick" %}
-          <p>{{ care.value.washInfo }}</p>
+          <p><span class="bold">{{ care.value.washInfo.action }}</span> {{ care.value.washInfo.text }}</p>
         </div>
-        <div class="flex-row">
-          {% render "tick" %}
-          <p>Use a <span class="bold">guppi bag</span></p>
-        </div>
-        {% if care.value.repair %}
-        <div class="flex-row">
-          {% render "tick" %}
-          <p><span class="bold">Repair service offered</span></p>
-        </div>
-      {% endif %}
+        {% for ele in care.value.text %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>{{ ele }}</p>
+          </div>
+        {% endfor %}
       </main-section>
     {% endif %}
 
@@ -267,7 +222,7 @@
         <p class="heading">What happens after?</p>
         <div class="flex-row">
           {% render "tick" %}
-          <p>Designed to be worn {{ end.value.expNumWears }}</p>
+          <p>Designed to be worn <span class="bold">{{ end.value.expNumWears }}</span> times</p>
         </div>
         {% if end.value.recycle.show %}
           <div class="flex-row">
@@ -279,11 +234,15 @@
         {% if end.value.takeBackScheme %}
           <div class="flex-row">
             {% render "tick" %}
-            <p>This product has a take back scheme!</p>
+            <p><span class="bold">Take back scheme</span> to avoid landfill</p>
           </div>
-        {% else %}
-          <p>This product does not have a take back scheme</p>
         {% endif %}
+        {% for ele in end.value.text %}
+          <div class="flex-row">
+            {% render "tick" %}
+            <p>{{ ele }}</p>
+          </div>
+        {% endfor %}
       </main-section>
     {% endif %}
   </content-container>
