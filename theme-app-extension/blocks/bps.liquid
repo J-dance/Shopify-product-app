@@ -186,10 +186,6 @@
         <p class="heading">How did it get here?</p>
         <div class="flex-row">
           {% render "tick" %}
-          <p>Transportation by <span class="bold">{{ logistics.value.modeOfTransport }}</span></p>
-        </div>
-        <div class="flex-row">
-          {% render "tick" %}
           <p><span class="bold">{{ logistics.value.packaging.type }}</span> {{ logistics.value.packaging.name }}</p>
         </div>
       </main-section>

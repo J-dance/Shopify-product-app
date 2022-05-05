@@ -25,12 +25,12 @@ const ReviewCompleteComponent = () => {
     <Card 
       sectioned 
       title="Shop status"
-      actions={[{
-        content: 'Settings',
-        onAction: () => {
-          redirect.dispatch(Redirect.Action.APP, '/settings');
-        }
-      }]}
+      // actions={[{
+      //   content: 'Settings',
+      //   onAction: () => {
+      //     redirect.dispatch(Redirect.Action.APP, '/settings');
+      //   }
+      // }]}
     >
       <ul style={{listStyleType: 'none'}}>
         <li>

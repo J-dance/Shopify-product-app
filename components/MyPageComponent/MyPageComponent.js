@@ -76,7 +76,7 @@ const MyPageComponent = (props) => {
   });
   
   const navigationMenu = NavigationMenu.create(app, {
-    items: [homeLink, onboardingLink, selectProductsLink, settingsLink],
+    items: [homeLink, onboardingLink, selectProductsLink],
     active: undefined,
   });
 

@@ -79,13 +79,13 @@ const Onboarding = () => {
                   Your product visbility reports are ready!
                 </p>
                 <p>
-                  {`Add the product reports to your product page templates in the theme editor (link here). We recommend creating a new product page template by duplicating your current product template and renaming this to something memorable such as 'product_page_with_report'.`}
+                  {`Add the product reports to your product page templates in the theme editor. We recommend creating a new product page template by duplicating your current product template and renaming this to something memorable such as 'product_page_with_report'.`}
                 </p>
                 <p>
                   {`Click 'add block' once on the product template page in the theme editor and select the Bendi option then preview and save. Next, go to your store products in the admin portal and select the new product template with the visibility report for each product necessary and save.`}
                 </p>
                 <p>
-                  Customise appearance in the theme editor settings, add and edit product story data in the settings tab in the bendi app, aswell as in the product pages under metafields (link here).
+                  Customise appearance in the theme editor settings, add and edit some product report features in the product pages under metafields.
                 </p>
               </TextContainer>
             </Card>
