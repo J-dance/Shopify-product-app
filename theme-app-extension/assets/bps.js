@@ -12,7 +12,7 @@ function setAllSectionsInvisible () {
   // set all nav items to not active
   const navItemElements = document.querySelectorAll(".nav-item");
   navItemElements.forEach((element) => {
-    element.classList.remove("active");
+    element.classList.remove("active-section");
   });
 };
 
@@ -36,7 +36,7 @@ function setActiveSection (section) {
   
   // add active state to button
   document.getElementById(section)
-    .classList.add("active");
+    .classList.add("active-section");
 
   // set all dots and dashes to black for relevant section
   const designBullet = document.getElementById('designBullet');

@@ -1,19 +1,16 @@
 <style>
-  .active {
+  .active-section {
     background: {{ block.settings.primary_color }} !important;
   }
-
   .heading {
     color: {{ block.settings.secondary_font_color }};
     font-weight: {{ block.settings.bold_weight }};
     margin-bottom: 8px;
   }
-
   .title {
     font-weight: {{ block.settings.bold_weight }};
     margin: 0;
   }
-
   .title-container {
     display: inline-block;
     align-items: center;
@@ -21,24 +18,21 @@
     margin-bottom: 14px;
     border-bottom: 3px solid {{ block.settings.primary_color }};
   }
-
   .bold {
     font-weight: {{ block.settings.font_weight }} !important;
   }
 </style>
-
-{% assign sections = "Design, Materials, Manufacturing, Logistics, Care & Use, End-of-life" | split: ", " %}
-{% assign designerImage = product.metafields.bps.designerImage %}
-{% assign settings = product.metafields.bps.settings %}
-{% assign design = product.metafields.bps.design %}
-{% assign materials = product.metafields.bps.materials %}
-{% assign manufacturing = product.metafields.bps.manufacturing %}
-{% assign logistics = product.metafields.bps.logistics %}
-{% assign care = product.metafields.bps.care %}
-{% assign end = product.metafields.bps.end %}
-{% assign sectionIcons = "designIcon, materialsIcon, manufacturingIcon, logisticsIcon, careAndUseIcon, endOfLifeIcon" | split: ", " %}
+{% liquid assign sections = "Design, Materials, Manufacturing, Logistics, Care & Use, End-of-life" | split: ", " %}
+{% liquid assign designerImage = product.metafields.bps.designerImage %}
+{% liquid assign settings = product.metafields.bps.settings %}
+{% liquid assign design = product.metafields.bps.design %}
+{% liquid assign materials = product.metafields.bps.materials %}
+{% liquid assign manufacturing = product.metafields.bps.manufacturing %}
+{% liquid assign logistics = product.metafields.bps.logistics %}
+{% liquid assign care = product.metafields.bps.care %}
+{% liquid assign end = product.metafields.bps.end %}
+{% liquid assign sectionIcons = "designIcon, materialsIcon, manufacturingIcon, logisticsIcon, careAndUseIcon, endOfLifeIcon" | split: ", " %}
 {% assign counter = 0 %}
-
 <story-container id="story-container" style="
   color: {{ block.settings.primary_font_color }};
 ">
@@ -64,7 +58,7 @@
                     </div>
                   </div>
                 {% when "materialsIcon" %}
-                  {% render "materialsIcon", class: "wideIconLayout" %}
+                  {% liquid render "materialsIcon", class: "wideIconLayout" %}
                   {% render "bullet-dashed-line", bulletId: "materialsBullet", link1: "materialsLink", link2: "manufacturingLink" %}
                 {% when "manufacturingIcon" %}
                   {% render "manufacturingIcon", class: "wideIconLayout" %}
@@ -120,7 +114,7 @@
           {% if designerImage %}
             <div style="margin-top: 2px;">
               <div class="designerImageContainer">
-                <img style="object-fit: cover;" width="50" height="50" src="{{ designerImage | img_url }}" alt="Designer image" />
+                <img style="object-fit: cover;" width="50" height="50" src="{{ designerImage | image_url }}" loading="lazy" alt="Designer image" />
               </div>
             </div>
           {% endif %}
@@ -134,7 +128,6 @@
         {% endfor %}
       </main-section>
     {% endif %}
-    
     {% if settings.value.materials %}
       <main-section id="materials-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
@@ -149,7 +142,6 @@
         {% endfor %}
       </main-section>
     {% endif %}
-
     {% if settings.value.manufacturing %}
       <main-section id="manufacturing-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
@@ -158,14 +150,7 @@
         <p class="heading">Where was it made?</p>
         <div class="flex-row" style="align-items: center; margin-bottom: 8px;">
           {% render "uk" %}
-          <div style="
-            background: #F9F9F9; 
-            padding: 5px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 15px;
-          ">
+          <div style="background: #F9F9F9; padding: 5px 12px; display: flex; align-items: center;justify-content: center; margin-left: 15px;">
             <p> Made by <span class="bold">{{ manufacturing.value.supplier.name }}</span> in {{ manufacturing.value.supplier.address }}</p>
           </div>
         </div>
@@ -177,7 +162,6 @@
         {% endfor %}
       </main-section>
     {% endif %}
-    
     {% if settings.value.logistics %}
       <main-section id="logistics-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
@@ -190,7 +174,6 @@
         </div>
       </main-section>
     {% endif %}
-
     {% if settings.value.care %}
       <main-section id="care-and-use-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
@@ -209,7 +192,6 @@
         {% endfor %}
       </main-section>
     {% endif %}
-
     {% if settings.value.end %}
       <main-section id="end-of-life-section" class="main-section invisible" style="width: 70%; padding: 10px 0px 0px;">
         <div class="title-container">
@@ -247,7 +229,6 @@
     {% render "bendiLogo" %}
   </footer>
 </story-container>
-
 {% schema %}
 {
   "name": "bps",
