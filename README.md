@@ -10,8 +10,8 @@ Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://
 - Shopify embedded app with a theme extension block.
 - Built to enhance product descriptions with a dynamic block component on the product pages.
 - Manage the extension through the emdedded app in the Shopify admin portal.
-- app uses Shopify grapgQL API's to access store data and save changes to the store.
-- Built using Shopify CLI create node app with Next.js frame work and Koa server.
+- app uses Shopify's graphQL API's to access store data and save changes to the store.
+- Built using Shopify CLI create node app with Next.js framework and Koa server.
 
 ## Installation
 
