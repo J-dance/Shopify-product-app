@@ -27,7 +27,7 @@ const UploadProductsStatusComponent = () => {
               source={CircleTickMajor}
               color="success" 
             />
-            <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
+            <p style={{marginLeft: '10px'}}>Connected to our back-end</p>
           </div>
         </li>
         <li >

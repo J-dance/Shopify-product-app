@@ -6,7 +6,7 @@ const Onboarding = () => {
   return (
     <MyPageComponent
       title="Onboarding"
-      subtitle="Follow the instructions to get started with creating your unique product visibility reports"
+      subtitle="Follow the instructions to get started with creating your unique product reports"
       pageName="onboarding"
       secondaryAction={{ on: false }}
     >
@@ -19,7 +19,7 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Connect your shop with Bendi so we can begin creating your product reports
+                  Connect your shop with our back-end so we can begin creating your product reports
                 </p>
               </TextContainer>
             </Card>
@@ -31,10 +31,10 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Select the products you wish to upload to Bendi for product reports
+                  Select the products you wish to upload for product reports
                 </p>
                 <p>
-                  Then download the template with the products selected and email the completed template to shopify@bendi.wtf
+                  Then download the template with the products selected and email the completed template to shopify@company.com
                 </p>
                 <p>
                   Once we have recieved this we will email you back with a more detailed form with auto complete features to speed up the process.
@@ -52,7 +52,7 @@ const Onboarding = () => {
                   Complete the detailed form with evidence attached when required and send this back to us for review.
                 </p>
                 <p>
-                  Bendi will process/verify your sumbission and alert you when we have completed the process. We will then get in touch to book a video call to go over the process and answer any questions.
+                  We will process/verify your sumbission and alert you when we have completed the process. We will then get in touch to book a video call to go over the process and answer any questions.
                 </p>
               </TextContainer>
             </Card>
@@ -64,7 +64,7 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Next, go to the Bendi app in your admin portal and a notifaction will appear asking for permission to add the product story data to your selected store products.
+                  Next, go to the app in your admin portal and a notifaction will appear asking for permission to add the product story data to your selected store products.
                 </p>
               </TextContainer>
             </Card>
@@ -76,7 +76,7 @@ const Onboarding = () => {
             >
               <TextContainer>
                 <p>
-                  Your product visbility reports are ready!
+                  Your product reports are ready!
                 </p>
                 <p>
                   {`Add the product reports to your product page templates in the theme editor. We recommend creating a new product page template by duplicating your current product template and renaming this to something memorable such as 'product_page_with_report'.`}

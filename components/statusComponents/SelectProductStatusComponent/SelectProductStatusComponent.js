@@ -26,7 +26,7 @@ const SelectProductStatusComponent = () => {
             source={CircleTickMajor}
             color="success" 
           />
-          <p style={{marginLeft: '10px'}}>Connected to Bendi</p>
+          <p style={{marginLeft: '10px'}}>Connected to our back-end</p>
         </li>
       </ul>
       <p>Select which products to upload for product reports</p>

@@ -19,7 +19,6 @@ export default function Index () {
   const shopData = useContext(ShopDataContext);
   const app = useAppBridge();
   const redirect = Redirect.create(app);
-  // const [status, setStatus] = useState('');
   const [clearPrivate, setClearPrivate] = useState(false);
   
   const toastNewShop = Toast.create(app, {
@@ -49,7 +48,7 @@ export default function Index () {
   
   return (
     <MyPageComponent
-      title="Welcome to Bendi!"
+      title="Welcome!"
       subtitle="Build your unique product visibility report and increase customer engagement"
       secondaryAction={{ on: false }}
       pageName="home"
